@@ -1,0 +1,70 @@
+[
+    {
+        "dbref": 8,
+        "desc": "Nondescript object.",
+        "location": 1,
+        "name": "box",
+        "type": "Thing"
+    },
+    {
+        "dbref": 0,
+        "desc": "\tThe Khellian's bridge looks like it's barely holding together. Half the consoles flicker erratically, their displays glitching between tactical readouts and static, while sparks occasionally spit from overloaded circuits. The command chair sits askew on its mounting, its leather scorched by plasma fires. A jagged crack runs across the main viewscreen, distorting the starfield beyond into fractured lines. The air reeks of burnt insulation and ionized metal, and the deck vibrates unevenly beneathfoot - somewhere, a damaged war coil thrums out of sync.\n\tEmergency lighting bathes everything in a dim red haze, broken only by the erratic flashes of dying monitors. The cloak control panel has been pried open, its innards exposed in a tangle of ripped-out isolinear chips and hastily spliced wires. A dark stain near the tactical station goes ignored - whoever bled there didn't survive long enough for cleanup.",
+        "location": 0,
+        "name": "The Bridge -- ChR Khellian",
+        "type": "Room"
+    },
+    {
+        "dbref": 1,
+        "desc": "An old Klingon fool.",
+        "location": 0,
+        "name": "Gin'tak",
+        "race": "Klingon",
+        "type": "Player"
+    },
+    {
+        "dbref": 3,
+        "desc": "\tYou stand in a low-ceilinged, angular corridor lit by pulsating green bioluminescent panels recessed into the walls. The air carries a sterile, ozonic tang, chilled to precisely 14°C. \n\tThe obsidian-black deck plating is inlaid with faintly glowing blue circuitry patterns that thrum with power beneath your boots. Slanted doorways - each marked with a crimson raptor sigil of the Romulan Star Empire - slide open with a hydraulic hiss. Security panels flicker with Tal Shiar encryption codes, their interfaces responding only to authorized crew neural imprints. Every surface reflects the Romulan obsession with controlled precision: no warmth, no wasted space, only predatory efficiency.You are in the ship's boom corridor. The door forward leades to the bridge, aft leads to engineering.",
+        "location": 3,
+        "name": "Boom Corridor",
+        "type": "Room"
+    },
+    {
+        "alias": "aft",
+        "dbref": 4,
+        "desc": "An exit leading to Aft Corridor.",
+        "destination": 3,
+        "location": 0,
+        "name": "Aft Corridor",
+        "type": "Exit"
+    },
+    {
+        "dbref": 5,
+        "desc": "The console is dim and seems to be defunct.",
+        "location": 0,
+        "name": "Helm Console",
+        "type": "Thing"
+    },
+    {
+        "dbref": 6,
+        "desc": "A small handheld tricorder which seems to be powered off.",
+        "location": 1,
+        "name": "Tricorder",
+        "type": "Thing"
+    },
+    {
+        "alias": "fore",
+        "dbref": 7,
+        "desc": "An exit leading to the bridge.",
+        "destination": 0,
+        "location": 3,
+        "name": "Bridge",
+        "type": "Exit"
+    },
+    {
+        "dbref": 2,
+        "desc": "Nondescript object.",
+        "location": 1,
+        "name": "Communicator",
+        "type": "Thing"
+    }
+]

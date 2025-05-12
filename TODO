@@ -1,0 +1,47 @@
+0. General commands/functions:
+command aliases, i.e. `l` for `look` etc 
+pose
+object locks
+
+1. Building/admin @commands:
+@ex <obj>
+@open <exitname>=<dest dbref>
+@alias <exitname>=<alias>
+@zone <room>=<zone dbref>
+
+2. Space system
+space obj classes
+move_in_3d() & tick system in a separate thread
+basic helm console: add obj_commands to command_table
+heading commands
+warp
+full stop
+impulse
+nav passive
+contact labels
+nav passive <contact>
+sci dock/undock
+Wormhole object
+
+3. Health / Combat
+
+
+4. Build world
+ChR Khellian
+Ch? Outpost
+
+
+5. Softcode:
+Turbolifts
+Transporters
+Communicators
+Tricorders
+Handheld weapons
+
+
+6. Help index
+separate into `help` noargs gives sections index
+`help space`
+`help general`
+`help admin`
+etc...

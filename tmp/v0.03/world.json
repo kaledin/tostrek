@@ -1,0 +1,52 @@
+[
+    {
+        "dbref": 0,
+        "desc": "You find yourself on the bridge of a Romulan destroyer. There are several consoles scattered around the room and a large viewscreen in the center.",
+        "name": "The Bridge",
+        "type": "Room"
+    },
+    {
+        "dbref": 1,
+        "desc": "An old Klingon fool.",
+        "location": 3,
+        "name": "Gin'tak",
+        "race": "Klingon",
+        "type": "Player"
+    },
+    {
+        "dbref": 3,
+        "desc": "You are in the ship's boom corridor. The door forward leades to the bridge, aft leads to engineering.",
+        "name": "Boom Corridor",
+        "type": "Room"
+    },
+    {
+        "alias": "aft",
+        "dbref": 4,
+        "destination": 3,
+        "location": 0,
+        "name": "Aft Corridor",
+        "type": "Exit"
+    },
+    {
+        "dbref": 5,
+        "desc": "The console is dim and seems to be defunct.",
+        "location": 0,
+        "name": "Helm Console",
+        "type": "Thing"
+    },
+    {
+        "dbref": 6,
+        "desc": "A small handheld tricorder which seems to be powered off.",
+        "location": 1,
+        "name": "Tricorder",
+        "type": "Thing"
+    },
+    {
+        "alias": "fore",
+        "dbref": 7,
+        "destination": 0,
+        "location": 3,
+        "name": "Bridge",
+        "type": "Exit"
+    }
+]

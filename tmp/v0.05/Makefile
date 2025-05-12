@@ -1,0 +1,11 @@
+CXX = g++
+CXXFLAGS = -std=c++23 -Wall -Wconversion -Wshadow -Wextra -Wpedantic -g
+SRC = main.cpp handle_input.cpp serialization.cpp
+OBJ = $(SRC:.cpp=.o)
+TARGET = trekmush
+
+$(TARGET): $(OBJ)
+	$(CXX) $(CXXFLAGS) -o $@ $^
+
+clean:
+	rm -f $(OBJ) $(TARGET)

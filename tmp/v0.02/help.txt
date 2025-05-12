@@ -1,0 +1,14 @@
+     ___________________________            ____
+...  \____NCC_1701A_________|_// __=*=__.--"----"--._________
+                    \  |        /-------.__________.--------'
+               /=====\ |======/      '     "----"
+                  \________          }]
+                           `--------'    TrekCPP Help Index
+
+The following commands have been implemented so far:
+
+look     - look around the room, or if inside an object
+inv      - show your current inventory
+help     - display this help file
+quit     - exit the game
+

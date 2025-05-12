@@ -1,0 +1,30 @@
+     ___________________________            ____
+...  \____NCC_1701A_________|_// __=*=__.--"----"--._________
+                    \  |        /-------.__________.--------'
+               /=====\ |======/      '     "----"
+                  \________          }]
+                           `--------'    TrekCPP Help Index
+
+The following commands have been implemented so far:
+
+<exitalias>         - go through an exit with <alias>
+look                - look around the room, or if inside an object
+look <obj>          - look at object/player/exit
+inv                 - show your current inventory
+take <name>         - pick up object/player
+drop <name>         - drop object/player
+say <message>       - say something
+enter <name>        - enter an object
+leave               - leave an object
+
+
+@create <name>      - create an object
+@destroy <name>     - destroy an object
+@dig <name>         - create a room
+@listobjects        - lists all game objects
+@tel <dbref>        - teleport to a room or thing
+@desc <obj>=<desc>  - describe an object
+
+help             - display this help file
+quit             - exit the game
+
