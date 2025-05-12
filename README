@@ -15,6 +15,8 @@ TOS Trek++ is a simple singleplayer text RPG in development. I took some inspira
 
 My plan is to add some basic orientation commands like every MUD/MUSH has, then expand it by adding a space system, AI-driven (God forbid) NPCs.
 
+What has been implemented so far: check 'help.txt' file or 'help' command in-game. TL;DR not much :)
+
 This is singleplayer intentionally, I will be the only person playing it, I admit it. 
 
 Requirements:
