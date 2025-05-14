@@ -54,9 +54,11 @@ class Player : public GameObj {
 // Thing - how is this any different from master GameObj? Do we need this class?
 class Thing : public GameObj {
 	public:
+	bool lock;
 
 	Thing() {
 	    type = "Thing";
+	    lock = false;
 	}
 };
 

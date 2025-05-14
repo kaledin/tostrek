@@ -3,6 +3,7 @@
 #include "globals.hpp"
 #include <print>
 #include "handle_input.hpp"
+#include <optional>
 
 std::unordered_map<std::string, std::function<void(Player*, const std::string&)>> command_table = {
     { "look", [](Player* player, const std::string& args) {
@@ -52,6 +53,12 @@ std::unordered_map<std::string, std::function<void(Player*, const std::string&)>
         else
             drop(player, args);
     }},
+    { "@lock", [](Player* player, const std::string& args) {
+        if (args.empty())
+            std::println("Lock what?");
+        else
+            lock(player, args);
+    }},
     { "@listobjects", [](Player* player, const std::string& args) {
         if (args.empty())
             listobjects(player);
@@ -82,6 +89,18 @@ std::unordered_map<std::string, std::function<void(Player*, const std::string&)>
         else
             desc(player, args);
     }},
+    { "@open", [](Player* player, const std::string& args) {
+        if (args.empty())
+            std::println("Open what?");
+        else
+            open(player, args);
+    }},
+    { "@alias", [](Player* player, const std::string& args) {
+        if (args.empty())
+            std::println("Alias what?");
+        else
+            alias(player, args);
+    }},
     { "@tel", [](Player* player, const std::string& args) {
         if (args.empty())
             std::println("Teleport where?");
@@ -89,6 +108,21 @@ std::unordered_map<std::string, std::function<void(Player*, const std::string&)>
             teleport(player, args);
     }},
 };
+
+std::optional<int> strtoint(const std::string& str) {
+    try {
+        size_t pos;
+        int intstr = std::stoi(str, &pos);
+        if (pos != str.length()) {
+            std::println("Invalid input: not a number.");
+            return std::nullopt;
+        }
+        return intstr;
+    } catch (...) {
+        std::println("Invalid input.");
+        return std::nullopt; // Indicate failure
+    }
+}
 
 std::string str_tolower(std::string s) {
     std::transform(s.begin(), s.end(), s.begin(), [](unsigned char c){ return std::tolower(c); });
@@ -116,31 +150,18 @@ void dig(Player* player, const std::string& args) {
 
 
 void teleport(Player* player, const std::string& args) {
-    try {
-        size_t pos;
-        int arg_dbref = std::stoi(args, &pos);
-        if (pos != args.length()) {
-            std::println("Invalid input: extra characters after number.");
-            return;
+    int num{};        
+    if (auto result = strtoint(args)) {
+        num = *result;
         }
-
-        if (!rooms_db.contains(arg_dbref) && !things_db.contains(arg_dbref)) {
-            std::println("Bad destination.");
-            return;
-        }
-        
-        if (world_db[arg_dbref]->location == player->dbref) {
-            std::println("Bad destination.");
-            return;
-        }
-
-        player->location = arg_dbref;
-        look(player);
-    } catch (const std::invalid_argument&) {
-        std::println("Invalid input: not a number.");
-    } catch (const std::out_of_range&) {
-        std::println("Invalid input: number out of range.");
+    else
+        return;
+    if (num < 0 || !rooms_db.contains(num)) {
+        std::println("Invalid room dbref.");
+        return;
     }
+    player->location = num;
+    look(player);
 }
 
 void listobjects(Player* player) {
@@ -150,6 +171,23 @@ void listobjects(Player* player) {
     for (const auto& [dbref, obj] : world_db) {
         std::println("#{:<5}- {:<10}- {:<25}", obj->dbref, obj->type, obj->name);
         }
+}
+
+void lock(Player* player, const std::string& args) {
+
+    bool found = false;
+    for (const auto& [dbref, obj] : things_db) {
+        if ((obj->location == player->location) && str_tolower(obj->name) == str_tolower(args)) {
+            obj->lock = !obj->lock;
+            if (obj->lock)
+                std::println("{} - {} locked.", obj->dbref, obj->name);
+            else
+                std::println("{} - {} unlocked.", obj->dbref, obj->name);
+            found = true;
+        }
+    }
+    if (!found)
+            std::println("I don't see that here.");
 }
 
 void drop(Player* player, const std::string& args) {
@@ -182,6 +220,10 @@ void enter(Player* player, const std::string& args) {
     for (const auto& [dbref, obj] : things_db) {
         if ((obj->location == player->location) && 
                                         str_tolower(obj->name) == str_tolower(args)) {
+            if (obj->lock) {
+                std::println("You can't enter that.");
+                return;
+            }
             player->location = obj->dbref;
             std::println("You enter the {}.", obj->name);
             look(player);
@@ -195,8 +237,12 @@ void enter(Player* player, const std::string& args) {
 void take(Player* player, const std::string& args) {
 
     bool found = false;
-    for (const auto& [dbref, obj] : world_db) {
+    for (const auto& [dbref, obj] : things_db) {
         if ((obj->location == player->location) && str_tolower(obj->name) == str_tolower(args)) {
+            if (obj->lock) {
+                std::println("You can't pick that up.");
+                return;
+            }
             obj->location = player->dbref;
             std::println("You pick up the {}.", obj->name);
             found = true;
@@ -252,6 +298,59 @@ void help() {
         else
             std::println("Help file not found!");
 }
+
+void open(Player* player, const std::string& args) {
+    if (auto pos = args.find('='); pos != std::string::npos) {
+        auto arg1 = args.substr(0, pos);
+        auto arg2 = args.substr(pos + 1);
+        int num{};        
+        if (auto result = strtoint(arg2)) {
+            num = *result;
+        }
+        else
+            return;
+        if (num < 0 || !rooms_db.contains(num)) {
+            std::println("Invalid room dbref.");
+            return;
+        }
+        Exit* exit = new Exit();
+        exit->dbref = new_dbref();
+        exit->name = arg1;
+        exit->desc = "Nondescript exit.";
+        exit->location = player->location;
+        exit->destination = num;
+        world_db.emplace(exit->dbref, exit), exits_db.emplace(exit->dbref, exit);
+        std::println("Created exit {} with dbref {} leading to {}.", exit->name, exit->dbref, world_db[exit->destination]->name);
+        }
+    else {
+        std::println("Usage: @open <name>=<dest_dbref>");
+        return;
+    }
+}
+
+void alias(Player* player, const std::string& args) {
+    if (auto pos = args.find('='); pos != std::string::npos) {
+        auto arg1 = args.substr(0, pos);
+        auto arg2 = args.substr(pos + 1);
+    
+        bool found = false;
+        
+        for (const auto& [dbref, obj] : exits_db) {
+            if ((obj->location == player->location) && str_tolower(obj->name) == str_tolower(arg1)) {
+                obj->alias = arg2;
+                std::println("Alias {} added to exit {}.", obj->alias, obj->name);
+                found = true;
+            }
+        }
+        if (!found)
+            std::println("I don't see that here.");       
+    }
+    else {
+        std::println("Usage: @alias <exit>=<alias>");
+        return;
+    }
+}
+
 
 void desc(Player* player, const std::string& args) {
     if (auto pos = args.find('='); pos != std::string::npos) {

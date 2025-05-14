@@ -66,6 +66,7 @@ void to_json(json& j, const Thing& r) {
     j = {
         {"type", "Thing"},
         {"dbref", r.dbref},
+        {"lock", r.lock},
         {"name", r.name},
         {"desc", r.desc},
 	{"location", r.location},
@@ -75,6 +76,7 @@ void to_json(json& j, const Thing& r) {
 void from_json(const json& j, Thing& r) {
     r.dbref = j.at("dbref").get<int>();
     r.name = j.at("name").get<std::string>();
+    r.lock = j.at("lock").get<bool>();
     r.desc = j.at("desc").get<std::string>();
     r.location = j.at("location").get<int>();
 }

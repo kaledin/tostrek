@@ -94,12 +94,42 @@ CoordsFmt abs2fmt(const CoordsAbs& input) {
     return result;
 }
 
+double dist3d(CoordsAbs obj1, CoordsAbs obj2) {
+    double dist{};
+    // calculate distance
+    return sqrt(pow(obj2.x - obj1.x, 2) + pow(obj2.y - obj1.y, 2) + pow(obj2.z - obj1.z, 2) * 1.0);
+}
+
+std::string showdist(double dist) {
+    std::string str{};
+    if (dist >= 20000) {
+        str = std::to_string(dist/sectorsize) + " Sctrs";
+        return str;
+    }
+    else if (dist < 0.1) {
+        str = std::to_string(dist*1000000) + " Kms";
+        return str;
+    }
+    else
+        return std::to_string(dist) + " Gms";
+}
+
 int main() {
 
-    std::string input_coords{};
-    std::println("Enter coords in formatted way: ");
-    std::getline(std::cin, input_coords);
-    std::println("Parsed coords: ");
+    std::string input_coords_from{};
+    std::println("Enter coords from in formatted way: ");
+    std::getline(std::cin, input_coords_from);
+ 
+    std::string input_coords_to{};
+    std::println("Enter coords to in formatted way: ");
+    std::getline(std::cin, input_coords_to);   
+
+    double dist = dist3d(CoordsAbs(fmt2abs(parse_coords(input_coords_from))), CoordsAbs(fmt2abs(parse_coords(input_coords_to))));
+
+    std::println("Distance: {} Gms", dist);
+    std::println("Distance string: {}", showdist(dist));
+
+    /*
     std::println("Quadrant: {}", parse_coords(input_coords).quadrant);
     std::println("Sector: {}:{}:{}", parse_coords(input_coords).sx, parse_coords(input_coords).sy, parse_coords(input_coords).sz);
     std::println("X Y Z: {} {} {}", parse_coords(input_coords).x, parse_coords(input_coords).y, parse_coords(input_coords).z);
@@ -112,5 +142,6 @@ int main() {
     std::cin >> coords_input.x >> coords_input.y >> coords_input.z;
 
     std::println("Formatted coords: {} {}:{}:{} {}:{}:{}", abs2fmt(coords_input).quadrant, abs2fmt(coords_input).sx, abs2fmt(coords_input).sy, abs2fmt(coords_input).sz, abs2fmt(coords_input).x, abs2fmt(coords_input).y, abs2fmt(coords_input).z);
-
+    */
+    return 0;
 }
