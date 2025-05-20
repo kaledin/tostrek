@@ -2,7 +2,10 @@
 #include <fstream>
 #include <unordered_map>
 #include "globals.hpp"
+#include <thread>
+#include "space.hpp"
 #include "classes.hpp"
+#include "sp_classes.hpp"
 #include "handle_input.hpp"
 #include "serialization.hpp"
 
@@ -14,6 +17,7 @@ std::unordered_map<int, Room*> rooms_db;
 std::unordered_map<int, Player*> players_db;
 std::unordered_map<int, Exit*> exits_db;
 std::unordered_map<int, Thing*> things_db;
+std::unordered_map<int, Ship*> ships_db;
 
 void cleanup(std::unordered_map<int, GameObj*>& db) {
     for (auto& [_, obj] : db)
@@ -23,11 +27,18 @@ void cleanup(std::unordered_map<int, GameObj*>& db) {
     players_db.clear();
     exits_db.clear();
     things_db.clear();
+    ships_db.clear();
 }
 
 int main() {
 
+
     Player* player = load_world("world.json");
+    // Global control flag`  
+    running = true;
+
+    std::thread space_thread(tick_loop);
+    console_init();
     // print some STar Trek ASCII art
     std::ifstream file("welcome.txt");
     if (file) {
@@ -42,6 +53,9 @@ int main() {
 
     while (handle_input(player)) {
     }
+
+    running = false;
+    space_thread.join();
     save_world("world.json");    
     cleanup(world_db);
     

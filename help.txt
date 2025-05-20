@@ -17,8 +17,9 @@ say <message>         - say something
 enter <name>          - enter an object
 leave                 - leave an object
 
-
+@space                - lists all active space objects and their stats
 @create <name>        - create an object
+@alias <name>=<alias> - create an alias for exit
 @destroy <name>       - destroy an object
 @dig <name>           - create a room
 @listobjects          - lists all game objects

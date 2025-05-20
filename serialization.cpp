@@ -2,6 +2,8 @@
 #include <fstream>
 #include "globals.hpp"
 #include "json.hpp"
+#include "sp_classes.hpp"
+#include <array>
 
 using json = nlohmann::json;
 
@@ -66,6 +68,8 @@ void to_json(json& j, const Thing& r) {
     j = {
         {"type", "Thing"},
         {"dbref", r.dbref},
+        {"shipref", r.shipref},
+        {"mannedby", r.mannedby},
         {"lock", r.lock},
         {"name", r.name},
         {"desc", r.desc},
@@ -74,6 +78,48 @@ void to_json(json& j, const Thing& r) {
 }
 
 void from_json(const json& j, Thing& r) {
+    r.dbref = j.at("dbref").get<int>();
+    r.name = j.at("name").get<std::string>();
+    r.lock = j.at("lock").get<bool>();
+    r.desc = j.at("desc").get<std::string>();
+    r.location = j.at("location").get<int>();
+
+    if (j.contains("mannedby"))
+        r.mannedby = j.at("mannedby").get<int>();
+    else
+        r.mannedby = -1;
+
+    if (j.contains("shipref"))
+        r.shipref = j.at("shipref").get<int>();
+    else
+        r.shipref = -1;
+}
+
+void to_json(json& j, const Ship& r) {
+    j = {
+        {"type", "Thing"},
+        {"sp_type", "Ship"},
+        {"sp_empire", r.sp_empire},
+        {"sp_class", r.sp_class},
+        {"coords", r.coords},
+        {"maxwarp", r.maxwarp},
+        {"curspeed", r.curspeed},
+        {"heading", r.heading},
+        {"dbref", r.dbref},
+        {"lock", r.lock},
+        {"name", r.name},
+        {"desc", r.desc},
+	{"location", r.location},
+    };
+}
+
+void from_json(const json& j, Ship& r) {
+    r.sp_empire = j.at("sp_empire").get<std::string>();
+    r.sp_class = j.at("sp_class").get<std::string>();
+    r.coords = j.at("coords").get<std::array<double, 3>>();
+    r.maxwarp = j.at("maxwarp").get<double>();
+    r.curspeed = j.at("curspeed").get<double>();
+    r.heading = j.at("heading").get<std::array<double, 2>>();
     r.dbref = j.at("dbref").get<int>();
     r.name = j.at("name").get<std::string>();
     r.lock = j.at("lock").get<bool>();
@@ -91,6 +137,7 @@ Player* load_world(const std::string& filename) {
 
     for (const auto& j : j_array) {
         std::string type = j.at("type");
+        std::string sp_type = j.value("sp_type", "");
 
         if (type == "Room") {
             Room* room = new Room(j.get<Room>());
@@ -107,9 +154,15 @@ Player* load_world(const std::string& filename) {
             exits_db[exit->dbref] = exit;
             world_db[exit->dbref] = exit;
         }
-        else if (type == "Thing") {
+        else if (type == "Thing" && sp_type == "") {
             Thing* thing = new Thing(j.get<Thing>());
             things_db[thing->dbref] = thing;
+            world_db[thing->dbref] = thing;
+        }
+        else if (type == "Thing" && sp_type == "Ship") {
+            Ship* thing = new Ship(j.get<Ship>());
+            things_db[thing->dbref] = thing;
+            ships_db[thing->dbref] = thing;
             world_db[thing->dbref] = thing;
         }
     }
@@ -127,8 +180,10 @@ void save_world(const std::string& filename) {
             to_json(j, *static_cast<Player*>(obj));
         if (obj->type == "Exit")
             to_json(j, *static_cast<Exit*>(obj));
-        if (obj->type == "Thing")
+        if (obj->type == "Thing" && obj->sp_type == "")
             to_json(j, *static_cast<Thing*>(obj));
+        if (obj->type == "Thing" && obj->sp_type == "Ship")
+            to_json(j, *static_cast<Ship*>(obj));
         j_array.push_back(j);
     }
 

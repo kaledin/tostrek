@@ -6,12 +6,14 @@
 
 using json = nlohmann::json;
 
+
 // GameObj - this is the master one, should contain a dbref, name, desc, contents (?)
 class GameObj {
 	public:
 	int dbref;
 	int location;
 	std::string type;
+	std::string sp_type;
 	std::string name;
 	std::string desc;
 
@@ -55,6 +57,9 @@ class Player : public GameObj {
 class Thing : public GameObj {
 	public:
 	bool lock;
+	int shipref;
+	int mannedby;
+	std::unordered_map<std::string, std::function<void(Player*, Thing*, const std::string&)>> object_commands;
 
 	Thing() {
 	    type = "Thing";

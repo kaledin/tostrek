@@ -16,6 +16,12 @@ std::unordered_map<std::string, std::function<void(Player*, const std::string&)>
         (void)player;
         std::println("You say: \"{}\"", args);
     }},
+    { "@space", [](Player* player, const std::string& args) {
+        if (args.empty())
+            space(player);
+        else
+            std::println(R"(Huh?  (Type "?" or "help" for help.))");
+    }},
     { "inv", [](Player* player, const std::string& args) {
         if (args.empty())
             inv(player);
@@ -124,6 +130,21 @@ std::optional<int> strtoint(const std::string& str) {
     }
 }
 
+std::optional<double> strtodbl(const std::string& str) {
+    try {
+        size_t pos;
+        double dblstr = std::stod(str, &pos);
+        if (pos != str.length()) {
+            std::println("Invalid input: not a number.");
+            return std::nullopt;
+        }
+        return dblstr;
+    } catch (...) {
+        std::println("Invalid input.");
+        return std::nullopt; // Indicate failure
+    }
+}
+
 std::string str_tolower(std::string s) {
     std::transform(s.begin(), s.end(), s.begin(), [](unsigned char c){ return std::tolower(c); });
     return s;
@@ -136,6 +157,15 @@ int new_dbref() {
     }
     throw std::runtime_error("No available dbrefs.");
 }
+
+void space(Player* player) {
+    (void)player;
+    std::println("###  name             sp_type   empire   speed   heading     coords");
+    std::println("{:-<79}", "");
+    for(const auto& [dbref, obj] : ships_db) 
+        std::println("{:<4} {:<15}  {:<8}  {:<7}  {:<6}  {:<5}/{:<4}  {:.2f}:{:.2f}:{:.2f}", obj->dbref, obj->name, obj->sp_type, obj->sp_empire, obj->curspeed, obj->heading[0], obj->heading[1], obj->coords[0], obj->coords[1], obj->coords[2]);
+}
+
 
 void dig(Player* player, const std::string& args) {
     (void)player;
@@ -359,6 +389,12 @@ void desc(Player* player, const std::string& args) {
     
         bool found = false;
         
+        if (arg1 == "here" && world_db[player->location]->type == "Room") {
+            world_db[player->location]->desc = arg2;
+            std::println("{} description updated.", world_db[player->location]->name);
+            found = true;
+        }
+
         for (const auto& [dbref, obj] : world_db) {
             if ((obj->location == player->dbref || obj->location == player->location) && 
                                         str_tolower(obj->name) == str_tolower(arg1)) {
@@ -482,7 +518,7 @@ bool handle_input(Player* player) {
         return true;
     }
 
-    /* 2. Try object-specific commands on accessible Things
+    // 2. Try object-specific commands on accessible Things
     for (auto& [_, thing] : things_db) {
         if (thing->location == player->location || thing->location == player->dbref) {
             if (thing->object_commands.contains(verb)) {
@@ -490,7 +526,7 @@ bool handle_input(Player* player) {
                 return true;
             }
         }
-    } */
+    }
     std::println(R"(Huh?  (Type "?" or "help" for help.))");
     return true;
 }

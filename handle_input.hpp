@@ -4,10 +4,13 @@
 
 bool handle_input(Player* player);
 
+std::optional<int> strtoint(const std::string& str);
+std::optional<double> strtodbl(const std::string& str);
 void look(Player* player);
 bool check_exits(Player* player, std::string& input);
 void help();
 void inv(Player* player);
+void space(Player* player);
 void lookat(Player* player, const std::string& args);
 void create(Player* player, const std::string& args);
 void destroy(Player* player, const std::string& args);

@@ -1,72 +1,29 @@
 [
     {
-        "alias": "port",
-        "dbref": 11,
-        "desc": "Nondescript exit.",
-        "destination": 10,
-        "location": 3,
-        "name": "Transporter",
-        "type": "Exit"
+        "dbref": 5,
+        "desc": "The console is dim and seems to be defunct. Type '\u001b[36mNAV HELP\u001b[0m' for help.",
+        "location": 0,
+        "lock": true,
+        "mannedby": 1,
+        "name": "Helm Console",
+        "shipref": 16,
+        "type": "Thing"
     },
     {
         "dbref": 10,
-        "desc": "Transporter room. Describe me please.",
+        "desc": "here you are.",
         "location": 10,
         "name": "Transporter",
         "type": "Room"
-    },
-    {
-        "dbref": 9,
-        "desc": "Nondescript room.",
-        "location": 9,
-        "name": "Engineering",
-        "type": "Room"
-    },
-    {
-        "dbref": 0,
-        "desc": "\tThe Khellian's bridge looks like it's barely holding together. Half the consoles flicker erratically, their displays glitching between tactical readouts and static, while sparks occasionally spit from overloaded circuits. The command chair sits askew on its mounting, its leather scorched by plasma fires. A jagged crack runs across the main viewscreen, distorting the starfield beyond into fractured lines. The air reeks of burnt insulation and ionized metal, and the deck vibrates unevenly beneathfoot - somewhere, a damaged war coil thrums out of sync.\n\tEmergency lighting bathes everything in a dim red haze, broken only by the erratic flashes of dying monitors. The cloak control panel has been pried open, its innards exposed in a tangle of ripped-out isolinear chips and hastily spliced wires. A dark stain near the tactical station goes ignored - whoever bled there didn't survive long enough for cleanup.",
-        "location": 0,
-        "name": "The Bridge -- ChR Khellian",
-        "type": "Room"
-    },
-    {
-        "dbref": 1,
-        "desc": "An old Klingon fool.",
-        "location": 0,
-        "name": "Gin'tak",
-        "race": "Klingon",
-        "type": "Player"
-    },
-    {
-        "dbref": 3,
-        "desc": "\tYou stand in a low-ceilinged, angular corridor lit by pulsating green bioluminescent panels recessed into the walls. The air carries a sterile, ozonic tang, chilled to precisely 14°C. \n\tThe obsidian-black deck plating is inlaid with faintly glowing blue circuitry patterns that thrum with power beneath your boots. Slanted doorways - each marked with a crimson raptor sigil of the Romulan Star Empire - slide open with a hydraulic hiss. Security panels flicker with Tal Shiar encryption codes, their interfaces responding only to authorized crew neural imprints. Every surface reflects the Romulan obsession with controlled precision: no warmth, no wasted space, only predatory efficiency.You are in the ship's boom corridor. The door forward leades to the bridge, aft leads to engineering.",
-        "location": 3,
-        "name": "Boom Corridor",
-        "type": "Room"
-    },
-    {
-        "alias": "aft",
-        "dbref": 4,
-        "desc": "An exit leading to Aft Corridor.",
-        "destination": 3,
-        "location": 0,
-        "name": "Aft Corridor",
-        "type": "Exit"
-    },
-    {
-        "dbref": 5,
-        "desc": "The console is dim and seems to be defunct.",
-        "location": 0,
-        "lock": true,
-        "name": "Helm Console",
-        "type": "Thing"
     },
     {
         "dbref": 6,
         "desc": "A small handheld tricorder which seems to be powered off.",
         "location": 1,
         "lock": false,
+        "mannedby": -1,
         "name": "Tricorder",
+        "shipref": -1,
         "type": "Thing"
     },
     {
@@ -79,12 +36,118 @@
         "type": "Exit"
     },
     {
+        "dbref": 3,
+        "desc": "\tYou stand in a low-ceilinged, angular corridor lit by pulsating green bioluminescent panels recessed into the walls. The air carries a sterile, ozonic tang, chilled to precisely 14°C. \n\tThe obsidian-black deck plating is inlaid with faintly glowing blue circuitry patterns that thrum with power beneath your boots. Slanted doorways - each marked with a crimson raptor sigil of the Romulan Star Empire - slide open with a hydraulic hiss. Security panels flicker with Tal Shiar encryption codes, their interfaces responding only to authorized crew neural imprints. Every surface reflects the Romulan obsession with controlled precision: no warmth, no wasted space, only predatory efficiency.You are in the ship's boom corridor. The door forward leades to the bridge, aft leads to engineering.",
+        "location": 3,
+        "name": "Boom Corridor",
+        "type": "Room"
+    },
+    {
+        "coords": [
+            74.94811449999939,
+            -3320.9386515302203,
+            105.99264000019161
+        ],
+        "curspeed": 0.0,
+        "dbref": 16,
+        "desc": "A Romulan scout.",
+        "heading": [
+            123.5,
+            0.0
+        ],
+        "location": 15,
+        "lock": false,
+        "maxwarp": 9.0,
+        "name": "ChR Khellian",
+        "sp_class": "Scout",
+        "sp_empire": "Romulan",
+        "sp_type": "Ship",
+        "type": "Thing"
+    },
+    {
+        "dbref": 15,
+        "desc": "All space objects live here.",
+        "location": 15,
+        "name": "Space",
+        "type": "Room"
+    },
+    {
         "dbref": 2,
         "desc": "Nondescript object.",
         "location": 1,
         "lock": false,
+        "mannedby": -1,
         "name": "Communicator",
+        "shipref": -1,
         "type": "Thing"
+    },
+    {
+        "alias": "aft",
+        "dbref": 4,
+        "desc": "An exit leading to Aft Corridor.",
+        "destination": 3,
+        "location": 0,
+        "name": "Aft Corridor",
+        "type": "Exit"
+    },
+    {
+        "dbref": 9,
+        "desc": "This should be same as the boom corridor, TODO",
+        "location": 9,
+        "name": "Engineering",
+        "type": "Room"
+    },
+    {
+        "dbref": 8,
+        "desc": "      ________________________________________________________\n     / .  .   .    *    .   .    .        .   .      *        \\\n    /     .       .       .    *    .    . *     .    .    *   \\\n   /   .   .     .  *   .   .     .   .     .      *   .        \\\n   |       *    .       .    .  .    *   . *    .       .    *  |\n   |    .     .     *  .   .    .   .       .     .  *      .   |\n   |  .    *    .       .    *    .    . *    .       .   .     |\n   |     .   .     .  *    .   .    .      .    *  .      .   * |\n   |  *    .    .        .    *    .   .     .      . *     .   |\n    \\      .     .   *     .    *    .      .     *  .    .     /\n     \\  .    *     .       .   .     .  *    .   .      *      /\n      \\_______________________________________________________/",
+        "location": 0,
+        "lock": true,
+        "mannedby": -1,
+        "name": "Viewscreen",
+        "shipref": -1,
+        "type": "Thing"
+    },
+    {
+        "alias": "port",
+        "dbref": 11,
+        "desc": "Nondescript exit.",
+        "destination": 10,
+        "location": 3,
+        "name": "Transporter",
+        "type": "Exit"
+    },
+    {
+        "alias": "fore",
+        "dbref": 14,
+        "desc": "Nondescript exit.",
+        "destination": 3,
+        "location": 9,
+        "name": "Boom Corridor",
+        "type": "Exit"
+    },
+    {
+        "dbref": 1,
+        "desc": "An old Romulan fool.",
+        "location": 0,
+        "name": "Gin'tak",
+        "race": "Klingon",
+        "type": "Player"
+    },
+    {
+        "alias": "aft",
+        "dbref": 13,
+        "desc": "Nondescript exit.",
+        "destination": 9,
+        "location": 3,
+        "name": "Engineering",
+        "type": "Exit"
+    },
+    {
+        "dbref": 0,
+        "desc": "\tThe Khellian's bridge looks like it's barely holding \ntogether. Half the consoles flicker erratically, their displays glitching \nbetween tactical readouts and static, while sparks occasionally spit from \noverloaded circuits. The command chair sits askew on its mounting, its \nleather scorched by plasma fires. A jagged crack runs across the main viewscreen,\n distorting the starfield beyond into fractured lines. The air reeks of burnt \ninsulation and ionized metal, and the deck vibrates unevenly beneathfoot - \nsomewhere, a damaged war coil thrums out of sync.\n\tEmergency lighting bathes everything in a dim red haze, broken only by the \nerratic flashes of dying monitors. The cloak control panel has been pried open, \nits innards exposed in a tangle of ripped-out isolinear chips and hastily \nspliced wires. A dark stain near the tactical station goes ignored - \nwhoever bled there didn't survive long enough for cleanup.",
+        "location": 0,
+        "name": "The Bridge -- ChR Khellian",
+        "type": "Room"
     },
     {
         "alias": "star",
