@@ -98,7 +98,7 @@ void from_json(const json& j, Thing& r) {
 void to_json(json& j, const Ship& r) {
     j = {
         {"type", "Thing"},
-        {"sp_type", "Ship"},
+        {"sp_type", r.sp_type},
         {"sp_empire", r.sp_empire},
         {"sp_class", r.sp_class},
         {"coords", r.coords},
@@ -115,6 +115,7 @@ void to_json(json& j, const Ship& r) {
 
 void from_json(const json& j, Ship& r) {
     r.sp_empire = j.at("sp_empire").get<std::string>();
+    r.sp_type = j.at("sp_type").get<std::string>();
     r.sp_class = j.at("sp_class").get<std::string>();
     r.coords = j.at("coords").get<std::array<double, 3>>();
     r.maxwarp = j.at("maxwarp").get<double>();
@@ -159,7 +160,7 @@ Player* load_world(const std::string& filename) {
             things_db[thing->dbref] = thing;
             world_db[thing->dbref] = thing;
         }
-        else if (type == "Thing" && sp_type == "Ship") {
+        else if (type == "Thing" && ((sp_type == "Ship") || (sp_type == "Planet"))) {
             Ship* thing = new Ship(j.get<Ship>());
             things_db[thing->dbref] = thing;
             ships_db[thing->dbref] = thing;
@@ -182,7 +183,7 @@ void save_world(const std::string& filename) {
             to_json(j, *static_cast<Exit*>(obj));
         if (obj->type == "Thing" && obj->sp_type == "")
             to_json(j, *static_cast<Thing*>(obj));
-        if (obj->type == "Thing" && obj->sp_type == "Ship")
+        if (obj->type == "Thing" && (obj->sp_type == "Ship" || obj->sp_type == "Planet"))
             to_json(j, *static_cast<Ship*>(obj));
         j_array.push_back(j);
     }

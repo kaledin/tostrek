@@ -150,6 +150,13 @@ std::string str_tolower(std::string s) {
     return s;
 }
 
+std::string str_toupper(std::string s) {
+    std::transform(s.begin(), s.end(), s.begin(), [](unsigned char c){ return std::toupper(c); });
+    return s;
+}
+
+
+
 int new_dbref() {
     for (int i=0; i < 10000; ++i) {
          if (!world_db.contains(i))

@@ -7,9 +7,10 @@
 #include "space.hpp"
 #include "handle_input.hpp"
 #include <fstream>
+#include <cctype>
 
 const double c = 0.299792458;
-const int sectorsize = 20000;
+const double sectorsize = 20000.0;
 
 std::atomic<bool> running{true};
 
@@ -74,6 +75,30 @@ void navconsole(Player* player, Thing* self, const std::string& args) {
 	std::println("Acknowledged: decelerating to full stop.");
 	ships_db[self->shipref]->curspeed = 0;
     }
+    else if (args == "passive") {
+	std::println("---------------------- {} -- Long Range Scan -----------------------",
+				    ships_db[self->shipref]->name);
+	for (const auto& [key, value] : ships_db[self->shipref]->lrs_contacts) {
+	    std::string lrscolor{};
+	    std::string name{};
+	    if (ships_db[value]->sp_type == "Ship")
+		lrscolor = CYAN;
+	    else if (ships_db[value]->sp_type == "Planet")
+		lrscolor = GREEN;
+	    if (dist3d(ships_db[self->shipref]->coords, ships_db[value]->coords)<sectorsize)
+		name = ships_db[value]->name;
+	    else
+		name = "- - -";
+	    std::println("{}{} :  {:<10}{:3.0f}/{:<3.0f}    {:<14}{:<14}{:<}{}", lrscolor, key, 
+		  str_toupper(ships_db[value]->sp_type),
+		  calc_pitch_yaw(ships_db[self->shipref]->coords, ships_db[value]->coords)[0],
+		  calc_pitch_yaw(ships_db[self->shipref]->coords, ships_db[value]->coords)[1],
+		  showdist(dist3d(ships_db[self->shipref]->coords, ships_db[value]->coords)), 
+		  showspeed(ships_db[value]->curspeed), name, CLR_RESET);
+	}
+	std::println("------------------------------------------------------------------------------");
+	}
+
     else if (auto pos = args.find(' '); pos != std::string::npos) {
         auto arg1 = args.substr(0, pos);
         auto arg2 = args.substr(pos + 1);
@@ -117,6 +142,70 @@ void navconsole(Player* player, Thing* self, const std::string& args) {
 	std::println("Error: unknown command.");
 }
 
+double dist3d(std::array<double, 3> obj1, std::array<double, 3> obj2) {
+    return sqrt(pow(obj2[0] - obj1[0], 2) + pow(obj2[1] - obj1[1], 2) + pow(obj2[2] - obj1[2], 2) * 1.0);
+}
+
+std::string showspeed(double speed) {
+    std::string str{};
+    double c_speed = speed / c;
+    if (c_speed == 0)
+	return str = "FULL STOP";
+    else if (c_speed > 1)
+	return str = "Warp " + std::format("{:.2f}", std::pow(c_speed, 1.0 / 3.0));
+    else
+	return str = std::format("{:.2f}", c_speed) + "c";
+}
+
+std::string showdist(double dist) {
+    std::string str{};
+    if (dist >= sectorsize)
+	return str = std::format("{:.2f}", dist/sectorsize) + " Sctrs";
+    else if (dist < 0.1)
+        return str = std::format("{:.1f}", std::round(dist*1000000*10.0)/10.0) + " Kms";
+    else
+	return str = std::format("{:.1f}", std::round(dist * 10.0)/10.0) + " Gms";
+}
+
+std::array<double, 2> calc_pitch_yaw(std::array<double, 3> pos1, std::array<double, 3> pos2) {
+    auto dx = pos2[0]-pos1[0];
+    auto dy = pos2[1]-pos1[1];
+    auto dz = pos2[2]-pos1[2];
+    double yaw = std::fmod(rad2deg(std::atan2(dy, dx)) + 360.0, 360.0);
+
+    double pitch = rad2deg(std::atan2(dz, std::hypot(dx, dy)));
+
+    return {yaw, pitch};
+}
+
+void update_lrs(Ship* obj) {
+    std::vector<int> coords_new{};
+    for (auto& [_, contact] : ships_db) {
+	if (contact->dbref == obj->dbref)
+	    continue;
+
+	if (dist3d(obj->coords, contact->coords) < 100000) {
+	    coords_new.push_back(contact->dbref);
+	    
+	    auto result = std::find_if(obj->lrs_contacts.begin(), obj->lrs_contacts.end(), [contact](const auto& mo) {
+		return mo.second == contact->dbref;
+	    });
+	    if (result == obj->lrs_contacts.end()) {
+		char label = 'A';
+		while (obj->lrs_contacts.contains(label) && label <= 'Z')
+		    ++label;
+		if (label <= 'Z')
+		    obj->lrs_contacts[label] = contact->dbref;
+	    }
+	}
+    }
+
+    // remove from lrs_contacts those contacts that are not in the coords_new vector
+    std::erase_if(obj->lrs_contacts, [&](const auto& pair) {
+	return !std::ranges::contains(coords_new, pair.second);
+    });
+}
+
 void tick_loop() {
     while (running) {
 	tick_all_spaceobjs(); // your function`  
@@ -130,6 +219,7 @@ void tick_all_spaceobjs() {
 		obj->coords[0] += obj->curspeed * std::cos(deg2rad(obj->heading[1])) * std::cos(deg2rad(obj->heading[0])) * delta_time;
 		obj->coords[1] += obj->curspeed * std::cos(deg2rad(obj->heading[1])) * std::sin(deg2rad(obj->heading[0])) * delta_time;
 		obj->coords[2] += obj->curspeed * std::sin(deg2rad(obj->heading[1])) * delta_time;
+	update_lrs(obj);
 	}  
 }
 

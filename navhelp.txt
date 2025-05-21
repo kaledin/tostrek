@@ -3,7 +3,7 @@
 [32mNAV HELP -- Display this help screen.[0m
 SCI DOCK -- Request automated docking with a starbase.
 SCI UNDOCK -- Request automated undocking from a starbase.
-NAV PASSIVE -- Long range scan information.
+[32mNAV PASSIVE -- Long range scan information.[0m
 NAV PASSIVE <Contact> -- Long range scan of a contact
 NAV STATUS -- Complete status report on position
 [32mNAV WARP <#> -- Brings ship to specified warp speed. (1.0 --> ?)[0m

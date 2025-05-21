@@ -6,6 +6,7 @@ bool handle_input(Player* player);
 
 std::optional<int> strtoint(const std::string& str);
 std::optional<double> strtodbl(const std::string& str);
+std::string str_toupper(std::string s); 
 void look(Player* player);
 bool check_exits(Player* player, std::string& input);
 void help();

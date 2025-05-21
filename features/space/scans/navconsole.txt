@@ -1,0 +1,54 @@
+------------------------- OFV KageKuro -- Navigation -------------------------
+     CURRENT LOCATION       AUTOPILOT DESTINATION          SHIP STATUS        
+ Quadrant:  Alpha-         Quadrant:  NONE          Autopilot:  OFF
+   Sector:  36:17:1          Sector:  NONE            Shields:  DOWN
+        X   0.00                  X   NONE                ETA:  NONE
+        Y   0.00                  Y   NONE            Bearing:  0.000
+        Z   500.00                Z   NONE               Mark:  0.000
+    Speed:  FULL STOP         Speed:  FULL STOP          Dist:  NONE
+                                                     MaxSpeed:  Warp 7.50
+------------------------------------------------------------------------------
+
+------------------------ IKV ghIntaq -- Passive Scan -------------------------
+          Target:  N/A                      Quadrant:  Alpha-
+            Type:  BASE                       Sector:  25:14:5
+  Target Heading:  0/0                             X   100.00
+Intercept Course:  304/48                          Y   100.00
+           Speed:  FULL STOP                       Z   50.00
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+                             In Federation Space
+------------------------------------------------------------------------------
+-------------------- IKV lInDab -- Visible Border Status ---------------------
+                               In Neutral Space                               
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+Distance To:  Federation Space:  10.72 Sctrs  Bearing: 282.09/-56.14
+                                 A- 23:14:2 (4992.20 3252.84 3480.10) 
+                 Klingon Space:  12.21 Sctrs  Bearing: 164.75/-54.65
+                                 A- 15:22:3 (3718.90 -2828.50 2352.00) 
+                  Nimbus Space:  6.89 Sctrs   Bearing: 201.81/-52.72
+                                 A+ 18:18:1 (2491.04 9002.44 -8170.64) 
+                 Romulan Space:  1.16 Sctrs   Bearing: 108.79/33.56
+                                 A+ 22:21:7 (-6261.45 -1646.56 -5666.04) 
+                 Tholian Space:  8.97 Sctrs   Bearing: 225.00/-0.25
+                                 A+ 16:14:6 (-6873.76 -6854.24 700.32)
+------------------------------------------------------------------------------
+----------------------- IKV lInDab -- Long Range Scan ------------------------
+B :  SHIP       352/8     322.9 Gms     FULL STOP     USS Saratoga 
+D :  STAR       171/0     16323.7 Gms   FULL STOP     Uwily 
+E :  PLANET     171/0     16478.7 Gms   192 km/s      Plilaun 
+G :  RELAY     352/-59    1.11 Sctrs    FULL STOP     - - -
+A :  ASTEROID                                                                 
+------------------------------------------------------------------------------
+
+std::println("----------------------- IKV lInDab -- Long Range Scan ------------------------");
+lrs_contact()
+std::print(" :  ")
+leftjustify type, padding 10
+certerjustify heading, padding 7
+std::print("    ")
+leftjustify distance, padding 14
+leftjustify speed, padding 14
+leftjustify name
+std::println("------------------------------------------------------------------------------";
+
+

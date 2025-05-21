@@ -3,6 +3,7 @@ command aliases, i.e. `l` for `look` etc
 pose
 partial/fuzzy search
 ncurses / ftxui
+@rp mode
 
 1. Building/admin @commands:
 @name <obj>=<name>
@@ -10,9 +11,7 @@ ncurses / ftxui
 @zone <room>=<zone dbref>
 
 2. Space system
-nav passive
 nav status
-contact labels
 nav passive <contact>
 sci dock/undock
 Wormhole object
@@ -26,7 +25,7 @@ fuel consumption
 4. Build world
 ChR Khellian
 Ch? Outpost
-
+OOC Room
 
 5. Softcode:
 Turbolifts

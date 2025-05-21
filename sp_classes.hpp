@@ -3,6 +3,7 @@
 #include <string>
 #include <array>
 #include "classes.hpp"
+#include <map>
 
 /* struct CoordsAbs {
     double x;
@@ -34,15 +35,15 @@ class Ship : public SpaceObj {
 
 	std::string sp_class;
 	std::string sp_empire;
-
+	std::map<char, int> lrs_contacts;
 //	bool canland;
 //	bool isdocked;
 //	bool shields;
 //	double lrs_range;
 //	double maxhull;
 //	double curhull;
-	Ship() {
-	    sp_type = "Ship";
-	}
+//	Ship() {
+//	    sp_type = "Ship";
+//	}
 };
 
