@@ -1,70 +1,12 @@
 [
     {
-        "dbref": 2,
-        "desc": "Nondescript object.",
-        "location": 1,
-        "lock": false,
-        "mannedby": -1,
-        "name": "Communicator",
-        "shipref": -1,
-        "type": "Thing"
-    },
-    {
-        "alias": "aft",
-        "dbref": 13,
-        "desc": "Nondescript exit.",
-        "destination": 9,
-        "location": 3,
-        "name": "Engineering",
-        "type": "Exit"
-    },
-    {
-        "dbref": 1,
-        "desc": "An old Romulan fool.",
-        "location": 0,
-        "name": "Gin'tak",
-        "race": "Klingon",
-        "type": "Player"
-    },
-    {
-        "alias": "star",
-        "dbref": 12,
-        "desc": "Nondescript exit.",
-        "destination": 3,
-        "location": 10,
-        "name": "Corridor",
-        "type": "Exit"
-    },
-    {
-        "dbref": 5,
-        "desc": "The console is dim and seems to be defunct. Type '\u001b[36mNAV HELP\u001b[0m' for help.",
+        "dbref": 8,
+        "desc": "      ________________________________________________________\n     / .  .   .    *    .   .    .        .   .      *        \\\n    /     .       .       .    *    .    . *     .    .    *   \\\n   /   .   .     .  *   .   .     .   .     .      *   .        \\\n   |       *    .       .    .  .    *   . *    .       .    *  |\n   |    .     .     *  .   .    .   .       .     .  *      .   |\n   |  .    *    .       .    *    .    . *    .       .   .     |\n   |     .   .     .  *    .   .    .      .    *  .      .   * |\n   |  *    .    .        .    *    .   .     .      . *     .   |\n    \\      .     .   *     .    *    .      .     *  .    .     /\n     \\  .    *     .       .   .     .  *    .   .      *      /\n      \\_______________________________________________________/",
         "location": 0,
         "lock": true,
-        "mannedby": 1,
-        "name": "Helm Console",
-        "shipref": 16,
-        "type": "Thing"
-    },
-    {
-        "coords": [
-            253.90025292890252,
-            -23210.057252703904,
-            1126.51874751653
-        ],
-        "curspeed": 0.0,
-        "dbref": 16,
-        "desc": "A Romulan scout.",
-        "heading": [
-            22.0,
-            22.0
-        ],
-        "location": 15,
-        "lock": false,
-        "maxwarp": 9.0,
-        "name": "ChR Khellian",
-        "sp_class": "Scout",
-        "sp_empire": "Romulan",
-        "sp_type": "Ship",
+        "mannedby": -1,
+        "name": "Viewscreen",
+        "shipref": -1,
         "type": "Thing"
     },
     {
@@ -75,19 +17,10 @@
         "type": "Room"
     },
     {
-        "alias": "fore",
-        "dbref": 14,
-        "desc": "Nondescript exit.",
-        "destination": 3,
+        "dbref": 9,
+        "desc": "This should be same as the boom corridor, TODO",
         "location": 9,
-        "name": "Boom Corridor",
-        "type": "Exit"
-    },
-    {
-        "dbref": 10,
-        "desc": "here you are.",
-        "location": 10,
-        "name": "Transporter",
+        "name": "Engineering",
         "type": "Room"
     },
     {
@@ -100,28 +33,90 @@
         "type": "Exit"
     },
     {
-        "dbref": 15,
-        "desc": "All space objects live here.",
+        "dbref": 10,
+        "desc": "here you are.",
+        "location": 10,
+        "name": "Transporter",
+        "type": "Room"
+    },
+    {
+        "coords": [
+            231.85242232691448,
+            -23085.017791848804,
+            1262.6756826434093
+        ],
+        "curspeed": 0.0,
+        "dbref": 16,
+        "desc": "A Romulan scout.",
+        "heading": [
+            100.0,
+            47.0
+        ],
         "location": 15,
-        "name": "Space",
-        "type": "Room"
+        "lock": false,
+        "maxwarp": 9.0,
+        "name": "ChR Khellian",
+        "sp_class": "Scout",
+        "sp_empire": "Romulan",
+        "sp_type": "Ship",
+        "type": "Thing"
     },
     {
-        "dbref": 9,
-        "desc": "This should be same as the boom corridor, TODO",
-        "location": 9,
-        "name": "Engineering",
-        "type": "Room"
+        "alias": "port",
+        "dbref": 11,
+        "desc": "Nondescript exit.",
+        "destination": 10,
+        "location": 3,
+        "name": "Transporter",
+        "type": "Exit"
     },
     {
-        "dbref": 8,
-        "desc": "      ________________________________________________________\n     / .  .   .    *    .   .    .        .   .      *        \\\n    /     .       .       .    *    .    . *     .    .    *   \\\n   /   .   .     .  *   .   .     .   .     .      *   .        \\\n   |       *    .       .    .  .    *   . *    .       .    *  |\n   |    .     .     *  .   .    .   .       .     .  *      .   |\n   |  .    *    .       .    *    .    . *    .       .   .     |\n   |     .   .     .  *    .   .    .      .    *  .      .   * |\n   |  *    .    .        .    *    .   .     .      . *     .   |\n    \\      .     .   *     .    *    .      .     *  .    .     /\n     \\  .    *     .       .   .     .  *    .   .      *      /\n      \\_______________________________________________________/",
+        "dbref": 0,
+        "desc": "\tThe Khellian's bridge looks like it's barely holding together. Half the consoles flicker erratically, their displays glitching between tactical readouts and static, while sparks occasionally spit from overloaded circuits. The command chair sits askew on its mounting, its leather scorched by plasma fires. A jagged crack runs across the main viewscreen, distorting the starfield beyond into fractured lines. The air reeks of burnt insulation and ionized metal, and the deck vibrates unevenly beneathfoot - somewhere, a damaged war coil thrums out of sync.\n\tEmergency lighting bathes everything in a dim red haze, broken only by the erratic flashes of dying monitors. The cloak control panel has been pried open, its innards exposed in a tangle of ripped-out isolinear chips and hastily spliced wires. A dark stain near the tactical station goes ignored - whoever bled there didn't survive long enough for cleanup.",
         "location": 0,
-        "lock": true,
+        "name": "The Bridge -- ChR Khellian",
+        "type": "Room"
+    },
+    {
+        "coords": [
+            210.26040662400402,
+            -22971.91501271928,
+            1380.9602441558025
+        ],
+        "curspeed": 0.2,
+        "dbref": 17,
+        "desc": "A Nimbussian transport.",
+        "heading": [
+            100.5,
+            45.0
+        ],
+        "location": 15,
+        "lock": false,
+        "maxwarp": 9.9,
+        "name": "NSV Tranquility",
+        "sp_class": "Transport",
+        "sp_empire": "Nimbussian",
+        "sp_type": "Ship",
+        "type": "Thing"
+    },
+    {
+        "dbref": 6,
+        "desc": "A small handheld tricorder which seems to be powered off.",
+        "location": 1,
+        "lock": false,
         "mannedby": -1,
-        "name": "Viewscreen",
+        "name": "Tricorder",
         "shipref": -1,
         "type": "Thing"
+    },
+    {
+        "alias": "fore",
+        "dbref": 7,
+        "desc": "An exit leading to the bridge.",
+        "destination": 0,
+        "location": 3,
+        "name": "Bridge",
+        "type": "Exit"
     },
     {
         "coords": [
@@ -146,60 +141,65 @@
         "type": "Thing"
     },
     {
-        "alias": "fore",
-        "dbref": 7,
-        "desc": "An exit leading to the bridge.",
-        "destination": 0,
-        "location": 3,
-        "name": "Bridge",
-        "type": "Exit"
-    },
-    {
-        "dbref": 6,
-        "desc": "A small handheld tricorder which seems to be powered off.",
-        "location": 1,
-        "lock": false,
-        "mannedby": -1,
-        "name": "Tricorder",
-        "shipref": -1,
-        "type": "Thing"
-    },
-    {
-        "coords": [
-            214.89936575455357,
-            -22996.944596378988,
-            1355.5044000330906
-        ],
-        "curspeed": 0.2,
-        "dbref": 17,
-        "desc": "A Nimbussian transport.",
-        "heading": [
-            100.5,
-            45.0
-        ],
-        "location": 15,
-        "lock": false,
-        "maxwarp": 9.9,
-        "name": "NSV Tranquility",
-        "sp_class": "Transport",
-        "sp_empire": "Nimbussian",
-        "sp_type": "Ship",
-        "type": "Thing"
-    },
-    {
-        "dbref": 0,
-        "desc": "\tThe Khellian's bridge looks like it's barely holding together. Half the consoles flicker erratically, their displays glitching between tactical readouts and static, while sparks occasionally spit from overloaded circuits. The command chair sits askew on its mounting, its leather scorched by plasma fires. A jagged crack runs across the main viewscreen, distorting the starfield beyond into fractured lines. The air reeks of burnt insulation and ionized metal, and the deck vibrates unevenly beneathfoot - somewhere, a damaged war coil thrums out of sync.\n\tEmergency lighting bathes everything in a dim red haze, broken only by the erratic flashes of dying monitors. The cloak control panel has been pried open, its innards exposed in a tangle of ripped-out isolinear chips and hastily spliced wires. A dark stain near the tactical station goes ignored - whoever bled there didn't survive long enough for cleanup.",
+        "dbref": 5,
+        "desc": "The console is dim and seems to be defunct. Type '\u001b[36mNAV HELP\u001b[0m' for help.",
         "location": 0,
-        "name": "The Bridge -- ChR Khellian",
+        "lock": true,
+        "mannedby": 1,
+        "name": "Helm Console",
+        "shipref": 16,
+        "type": "Thing"
+    },
+    {
+        "dbref": 15,
+        "desc": "All space objects live here.",
+        "location": 15,
+        "name": "Space",
         "type": "Room"
     },
     {
-        "alias": "port",
-        "dbref": 11,
+        "alias": "star",
+        "dbref": 12,
         "desc": "Nondescript exit.",
-        "destination": 10,
-        "location": 3,
-        "name": "Transporter",
+        "destination": 3,
+        "location": 10,
+        "name": "Corridor",
         "type": "Exit"
+    },
+    {
+        "dbref": 1,
+        "desc": "An old Romulan fool.",
+        "location": 0,
+        "name": "Gin'tak",
+        "race": "Klingon",
+        "type": "Player"
+    },
+    {
+        "alias": "fore",
+        "dbref": 14,
+        "desc": "Nondescript exit.",
+        "destination": 3,
+        "location": 9,
+        "name": "Boom Corridor",
+        "type": "Exit"
+    },
+    {
+        "alias": "aft",
+        "dbref": 13,
+        "desc": "Nondescript exit.",
+        "destination": 9,
+        "location": 3,
+        "name": "Engineering",
+        "type": "Exit"
+    },
+    {
+        "dbref": 2,
+        "desc": "Nondescript object.",
+        "location": 1,
+        "lock": false,
+        "mannedby": -1,
+        "name": "Communicator",
+        "shipref": -1,
+        "type": "Thing"
     }
 ]

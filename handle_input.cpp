@@ -4,6 +4,9 @@
 #include <print>
 #include "handle_input.hpp"
 #include <optional>
+#include <readline/readline.h>
+#include <readline/history.h>
+
 
 
 // global commands register:
@@ -511,16 +514,32 @@ bool check_exits(Player* player, std::string& input) {
 }   
 
 bool handle_input(Player* player) {
+    char *input = readline("> ");
+    if (!input) return true;
+
+    std::string line(input);
+    free(input);
+
+    if (!line.empty())
+        add_history(line.c_str());
+      
     std::string verb;
     std::string args;
 
-    std::print("> ");
-    std::cin >> verb;
+    if (auto pos = line.find(' '); pos != std::string::npos) {
+        verb = line.substr(0, pos);
+        args = line.substr(pos + 1);
+    }
+    else
+        verb = line;
+        
+//    std::print("> ");
+//    std::cin >> verb;
     verb = str_tolower(verb);
 
-    std::getline(std::cin, args);
-    if (args[0] == ' ')
-        args.erase(0, 1);
+//    std::getline(std::cin, args);
+//    if (args[0] == ' ')
+//        args.erase(0, 1);
 
 // Let's do a simple check if user wants to quit on top of everything
     if (verb == "quit" && args.empty()) {

@@ -5,7 +5,7 @@ endif
 
 CXX = g++
 CXXFLAGS = -std=c++23 -Wall -Wconversion -Wshadow -Wextra -Werror -Wpedantic -g
-LDFLAGS = -lncurses
+LDFLAGS = -lncurses -lreadline
 SRC = main.cpp handle_input.cpp serialization.cpp space.cpp
 OBJ = $(SRC:.cpp=.o)
 TARGET = trekmush
