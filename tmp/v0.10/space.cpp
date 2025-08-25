@@ -28,16 +28,16 @@ constexpr double rad2deg(double rad) {
 }
 
 void console_init() {
-    GameObj* helm = world_db[5]; // this is a dirty hack, 
+    Thing* helm = things_db.at(5);
  
-    helm->object_commands["helm"] = [](GameObj* player, GameObj* self, const std::string& args) {
+    helm->object_commands["helm"] = [](Player* player, Thing* self, const std::string& args) {
 	
 	if (args.empty())
 	    std::println(R"(Huh?  (Type "?" or "help" for help.))");
 
 	else if (args == "console") {
 	    if (self->mannedby == player->dbref) {
-		self->mannedby = std::numeric_limits<size_t>::max();
+		self->mannedby = -1;
 		std::println("You stand up from the helm console.");
 	    }
 	    else {
@@ -49,7 +49,7 @@ void console_init() {
 	    std::println(R"(Huh?  (Type "?" or "help" for help.))");
     };
   
-    helm->object_commands["nav"] = [](GameObj* player, GameObj* self, const std::string& args) {
+    helm->object_commands["nav"] = [](Player* player, Thing* self, const std::string& args) {
 	if (args.empty())
             std::println(R"(Huh?  (Type "?" or "help" for help.))");
 	else if (self->mannedby != player->dbref)
@@ -59,7 +59,7 @@ void console_init() {
     };
 }
 
-void navconsole(GameObj* player, GameObj* self, const std::string& args) {
+void navconsole(Player* player, Thing* self, const std::string& args) {
     (void)player;
     if (args == "help") {
 	std::ifstream file("navhelp.txt");
@@ -74,34 +74,32 @@ void navconsole(GameObj* player, GameObj* self, const std::string& args) {
     }
     else if (args == "full stop") {
     	std::println("Acknowledged: decelerating to full stop.");
-	    world_db[self->shipref]->curspeed = 0;
+	    ships_db[self->shipref]->curspeed = 0;
     }
     else if (args == "passive") {
 	    std::println("---------------------- {} -- Long Range Scan -----------------------",
-				    world_db[self->shipref]->name);
-	    for (const auto& [key, value] : world_db[self->shipref]->lrs_contacts) {
-          if(world_db[value]->type != SHIP)
-            continue;
+				    ships_db[self->shipref]->name);
+	    for (const auto& [key, value] : ships_db[self->shipref]->lrs_contacts) {
 	        std::string lrscolor{};
 	        std::string name{};
-	        if (world_db[value]->sp_type == "Ship")
+	        if (ships_db[value]->sp_type == "Ship")
 		        lrscolor = CYAN;
-	        else if (world_db[value]->sp_type == "Planet")
+	        else if (ships_db[value]->sp_type == "Planet")
 		        lrscolor = GREEN;
-	        if (dist3d(world_db[self->shipref]->coords, world_db[value]->coords)<sectorsize)
-		        name = world_db[value]->name;
+	        if (dist3d(ships_db[self->shipref]->coords, ships_db[value]->coords)<sectorsize)
+		        name = ships_db[value]->name;
 	        else
 		        name = "- - -";
 	        std::println("{}{} :  {:<10}{:3.0f}/{:<3.0f}    {:<14}{:<14}{:<}{}", lrscolor, key, 
-		        str_toupper(world_db[value]->sp_type),
-		        calc_pitch_yaw(world_db[self->shipref]->coords, world_db[value]->coords)[0],
-		        calc_pitch_yaw(world_db[self->shipref]->coords, world_db[value]->coords)[1],
-		        showdist(dist3d(world_db[self->shipref]->coords, world_db[value]->coords)), 
-		        showspeed(world_db[value]->curspeed), name, CLR_RESET);
+		        str_toupper(ships_db[value]->sp_type),
+		        calc_pitch_yaw(ships_db[self->shipref]->coords, ships_db[value]->coords)[0],
+		        calc_pitch_yaw(ships_db[self->shipref]->coords, ships_db[value]->coords)[1],
+		        showdist(dist3d(ships_db[self->shipref]->coords, ships_db[value]->coords)), 
+		        showspeed(ships_db[value]->curspeed), name, CLR_RESET);
 	    }
 	    std::println("------------------------------------------------------------------------------");
 	}
-/*
+
     else if (args == "window") {
 //        running = true;
         initscr();             // Start ncurses
@@ -145,7 +143,7 @@ void navconsole(GameObj* player, GameObj* self, const std::string& args) {
 
         endwin(); // Exit ncurses mode
     }
-*/
+
     else if (auto pos = args.find(' '); pos != std::string::npos) {
         auto arg1 = args.substr(0, pos);
         auto arg2 = args.substr(pos + 1);
@@ -153,7 +151,7 @@ void navconsole(GameObj* player, GameObj* self, const std::string& args) {
 	        if (auto result = strtodbl(arg2)) {
 		        if (*result > -0.33 && *result < 1.0) {
 		        std::println("Acknowledged: accelerating to IMPULSE {}", *result);
-		        world_db[self->shipref]->curspeed = c * (*result);
+		        ships_db[self->shipref]->curspeed = c * (*result);
 		        }
 		        else
 		            std::println("Error: cannot accelerate to IMPULSE {}", *result);
@@ -161,9 +159,9 @@ void navconsole(GameObj* player, GameObj* self, const std::string& args) {
 	    }
         else if (arg1 == "warp") {
 	        if (auto result = strtodbl(arg2)) {
-		        if (*result > 0 && *result < world_db[self->shipref]->maxwarp) {
+		        if (*result > 0 && *result < ships_db[self->shipref]->maxwarp) {
 		            std::println("Acknowledged: accelerating to WARP {}.", *result);
-		            world_db[self->shipref]->curspeed = warp2gms(*result);
+		            ships_db[self->shipref]->curspeed = warp2gms(*result);
 		        }
 		        else
 		            std::println("Error: cannot accelerate to WARP {}.", *result);
@@ -178,8 +176,8 @@ void navconsole(GameObj* player, GameObj* self, const std::string& args) {
 	        
                 if (yaw && pitch && *yaw >= 0.0 && *yaw <= 360.0 && *pitch >= -90.0 && *pitch <= 90.0) {
 		            std::println("Acknowledged: heading set to {} mark {}.", *yaw, *pitch);
-		            world_db[self->shipref]->heading[0] = *yaw;
-		            world_db[self->shipref]->heading[1] = *pitch;
+		            ships_db[self->shipref]->heading[0] = *yaw;
+		            ships_db[self->shipref]->heading[1] = *pitch;
 	            }
                 else
 		            std::println("Error: incorrect heading/mark.");
@@ -230,19 +228,16 @@ std::array<double, 2> calc_pitch_yaw(std::array<double, 3> pos1, std::array<doub
     return {yaw, pitch};
 }
 
-void update_lrs(GameObj* obj) {
-    std::vector<size_t> found{};
+void update_lrs(Ship* obj) {
+    std::vector<int> found{};
     std::vector<char> toerase{};
 
-    for (auto& contact : world_db) {
-      if (contact->type != SHIP)
-        continue;
-      
-	    if (contact->dbref == obj->dbref)
-	      continue;
+    for (auto& [_, contact] :ships_db) {
+	if (contact->dbref == obj->dbref)
+	    continue;
 
-	    if (dist3d(obj->coords, contact->coords) < 100000)
-	      found.push_back(contact->dbref);
+	if (dist3d(obj->coords, contact->coords) < 100000)
+	    found.push_back(contact->dbref);
     }
 
     for (const auto& pair : obj->lrs_contacts) {
@@ -274,14 +269,12 @@ void tick_loop() {
 }
 
 void tick_all_spaceobjs() {  
-	for (auto& obj : world_db) { 
-    if (obj->type != SHIP)
-      continue;
+	for (auto& [_, obj] : ships_db) { 
 		double delta_time = 1.0;
 		obj->coords[0] += obj->curspeed * std::cos(deg2rad(obj->heading[1])) * std::cos(deg2rad(obj->heading[0])) * delta_time;
 		obj->coords[1] += obj->curspeed * std::cos(deg2rad(obj->heading[1])) * std::sin(deg2rad(obj->heading[0])) * delta_time;
 		obj->coords[2] += obj->curspeed * std::sin(deg2rad(obj->heading[1])) * delta_time;
-	  update_lrs(obj);
+	update_lrs(obj);
 	}  
 }
 

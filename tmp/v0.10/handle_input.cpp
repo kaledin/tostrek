@@ -1,3 +1,4 @@
+#include <iostream>
 #include <fstream>
 #include "globals.hpp"
 #include <print>
@@ -6,7 +7,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-std::vector<size_t> free_list;
+
 
 // global commands register:
 std::unordered_map<std::string, CommandFn> command_table = {
@@ -30,56 +31,13 @@ std::unordered_map<std::string, CommandFn> command_table = {
     { "@desc", cmd_desc },
 };
 
-std::string to_string(ObjectType t) {
-    switch (t) {
-        case ObjectType::ROOM:   return "Room";
-        case ObjectType::PLAYER: return "Player";
-        case ObjectType::THING:  return "Thing";
-        case ObjectType::EXIT:  return "Exit";
-        case ObjectType::SHIP:  return "Ship";
+int new_dbref() {
+    for (int i=0; i < 10000; ++i) {
+         if (!world_db.contains(i))
+            return i;
     }
-    return "Unknown"; // just in case
+    throw std::runtime_error("No available dbrefs.");
 }
-
-std::ostream& operator<<(std::ostream& os, ObjectType t) {
-    return os << to_string(t);
-}
-
-// Create a dummy object
-GameObj* make_dummy() {
-    GameObj* dummy = new GameObj{};
-    dummy->name = "DUMMY";
-    dummy->location = 0; // could be "Deleted Objects" dbref later
-    return dummy;
-}
-
-size_t new_dbref() {
-    if (!free_list.empty()) {
-        size_t id = free_list.back();
-        free_list.pop_back();
-        return id;
-    }
-    return world_db.size(); // next new slot
-}
-
-void delete_object(size_t dbref) {
-        if (dbref >= world_db.size()) {
-            std::println("Invalid dbref {}.", dbref);
-            return;
-    }
-
-    GameObj* old = world_db[dbref];
-    if (old) {
-        delete old; // free memory of the deleted object
-    }
-
-    // replace with dummy at the same index
-    world_db[dbref] = make_dummy();
-
-    // mark dbref reusable
-    free_list.push_back(dbref);
-}
-
 
 void wrapchar(std::string& str, size_t size) {
     size_t counter = 0;
@@ -164,25 +122,25 @@ std::string str_toupper(std::string s) {
     return s;
 }
 
-void cmd_look(GameObj* player, const std::string& args) {
+void cmd_look(Player* player, const std::string& args) {
     if (args.empty())
-        for (const auto& obj : world_db) {
+        for (const auto& [_, obj] : world_db) {
             if (obj->dbref == player->location) {
                 std::println("{}{}{}", GREEN, obj->name, CLR_RESET);
                 wrapchar(obj->desc, 80);
                 std::println("Contents:");
-                for (const auto& player1 : world_db) {
-                    if (player1->location == obj->dbref && player1->type == PLAYER)
+                for (const auto& [dbref, player1] : players_db) {
+                    if (player1->location == obj->dbref)
                         std::println("{}{}{}", RED, player1->name, CLR_RESET);
                 }
-                for (const auto& thing : world_db) {
-                    if (thing->location == obj->dbref && thing->type == THING)
+                for (const auto& [dbref, thing] : things_db) {
+                    if (thing->location == obj->dbref)
                         std::println("{}{}{}", BLUE, thing->name, CLR_RESET);
                 }
-                if (obj->type == ROOM) {
+                if (obj->type == "Room") {
                     std::println("Obvious exits:");
-                    for (const auto& exit : world_db) {
-                        if (exit->type == EXIT && exit->location == obj->dbref)
+                    for (const auto& [dbref, exit] : exits_db) {
+                        if (exit->location == obj->dbref)
                             std::println("- {} <{}{}{}>", exit->name, CYAN, exit->alias, CLR_RESET);
                     }
                 }
@@ -194,7 +152,7 @@ void cmd_look(GameObj* player, const std::string& args) {
             std::println("{}", player->desc);
         }
         bool found = false;
-        for (const auto& obj : world_db) {
+        for (const auto& [dbref, obj] : world_db) {
             if ((obj->location == player->dbref || obj->location == player->location) && 
                                         str_tolower(obj->name) == str_tolower(args)) {
                 std::println("{}", obj->name);
@@ -207,7 +165,7 @@ void cmd_look(GameObj* player, const std::string& args) {
     }
 }
 
-void cmd_say(GameObj* player, const std::string& args) {
+void cmd_say(Player* player, const std::string& args) {
     if (args.empty())
         std::println(R"(Huh?  (Type "?" or "help" for help.))");
     else {
@@ -216,11 +174,13 @@ void cmd_say(GameObj* player, const std::string& args) {
     }
 }
 
-void cmd_inv(GameObj* player, const std::string& args) {
+void cmd_inv(Player* player, const std::string& args) {
     if (args.empty()) {
+        int loc = player->dbref;
+
         std::println("You are carrying:");
-        for (const auto& thing : world_db) {
-            if (thing->location == player->dbref && thing->type == THING) {
+        for (const auto& [dbref, thing] : things_db) {
+            if (thing->location == loc) {
                 std::println("{}", thing->name);
             }
         }
@@ -229,7 +189,7 @@ void cmd_inv(GameObj* player, const std::string& args) {
         std::println(R"(Huh?  (Type "?" or "help" for help.))");
 }
 
-void cmd_help(GameObj *player, const std::string &args) {
+void cmd_help(Player *player, const std::string &args) {
     (void)player;
     if (args.empty()) {
         std::ifstream file("help.txt");
@@ -246,12 +206,12 @@ void cmd_help(GameObj *player, const std::string &args) {
         std::println(R"(Huh?  (Type "?" or "help" for help.))");
 }
 
-void cmd_take(GameObj* player, const std::string& args) {
+void cmd_take(Player* player, const std::string& args) {
     if (args.empty())
         std::println(R"(Huh?  (Type "?" or "help" for help.))");
     else {
         bool found = false;
-        for (const auto& obj : world_db) {
+        for (const auto& [dbref, obj] : things_db) {
             if ((obj->location == player->location) && str_tolower(obj->name) == str_tolower(args)) {
                 if (obj->lock) {
                     std::println("You can't pick that up.");
@@ -267,12 +227,12 @@ void cmd_take(GameObj* player, const std::string& args) {
     }
 }
 
-void cmd_drop(GameObj* player, const std::string& args) {
+void cmd_drop(Player* player, const std::string& args) {
     if (args.empty())
         std::println(R"(Huh?  (Type "?" or "help" for help.))");
     else {
         bool found = false;
-        for (const auto& obj : world_db) {
+        for (const auto& [dbref, obj] : world_db) {
             if ((obj->location == player->dbref) && 
                                         str_tolower(obj->name) == str_tolower(args)) {
                 obj->location = player->location;
@@ -285,9 +245,9 @@ void cmd_drop(GameObj* player, const std::string& args) {
     }
 }
 
-void cmd_leave(GameObj* player, const std::string& args) {
+void cmd_leave(Player* player, const std::string& args) {
     if (args.empty()) {
-        if (world_db[player->location]->type != THING) {
+        if (world_db[player->location]->type != "Thing") {
             std::println("You can't leave.");
             return;
         }
@@ -299,12 +259,12 @@ void cmd_leave(GameObj* player, const std::string& args) {
         std::println(R"(Huh?  (Type "?" or "help" for help.))");
 }
 
-void cmd_enter(GameObj* player, const std::string& args) {
+void cmd_enter(Player* player, const std::string& args) {
     if (args.empty())
         std::println(R"(Huh?  (Type "?" or "help" for help.))");
     else {
         bool found = false;
-        for (const auto& obj : world_db) {
+        for (const auto& [dbref, obj] : things_db) {
             if ((obj->location == player->location) && 
                                         str_tolower(obj->name) == str_tolower(args)) {
                 if (obj->lock) {
@@ -322,39 +282,39 @@ void cmd_enter(GameObj* player, const std::string& args) {
     }
 }
 
-void cmd_space(GameObj* player, const std::string& args) {
+void cmd_space(Player* player, const std::string& args) {
     if (args.empty()) {
         (void)player;
         std::println("###  name             sp_type   empire   speed   heading     coords");
         std::println("{:-<79}", "");
-        for(const auto& obj : world_db) {
-            if (obj->type != SHIP) {
-                continue;
-            } 
+        for(const auto& [dbref, obj] : ships_db) 
             std::println("{:<4} {:<15}  {:<8}  {:<7}  {:<6}  {:<5}/{:<4}  {:.2f}:{:.2f}:{:.2f}", obj->dbref, obj->name, obj->sp_type, obj->sp_empire, obj->curspeed, obj->heading[0], obj->heading[1], obj->coords[0], obj->coords[1], obj->coords[2]);
-        }
     }
     else
         std::println(R"(Huh?  (Type "?" or "help" for help.))");
 }
 
-void cmd_destroy(GameObj* player, const std::string& args) {
+void cmd_destroy(Player* player, const std::string& args) {
     if (args.empty())
         std::println(R"(Huh?  (Type "?" or "help" for help.))");
     else {
-        for (const auto& obj : world_db) {
+        for (auto it = world_db.begin(); it != world_db.end(); ++it) {
+            auto& obj = it->second;
             if ((obj->location == player->dbref || obj->location == player->location) && 
                                         str_tolower(obj->name) == str_tolower(args)) {
-                if (obj->type == ROOM) {
+                if (obj->type == "Room") {
                     std::println("Rooms cannot be destroyed yet.");
                     return;
                 }
-                if (obj->type == PLAYER) {
+                if (obj->type == "Player") {
                     std::println("Players cannot be destroyed yet.");
                     return;
                 }
                 std::println("Object #{} destroyed.", obj->dbref);
-                delete_object(obj->dbref);
+                things_db.erase(obj->dbref);
+                exits_db.erase(obj->dbref);
+                delete obj;
+                world_db.erase(it);
                 return;
             }
         }
@@ -362,74 +322,73 @@ void cmd_destroy(GameObj* player, const std::string& args) {
     }
 }
 
-void cmd_create(GameObj* player, const std::string& args) {
+void cmd_create(Player* player, const std::string& args) {
     if (args.empty())
         std::println(R"(Huh?  (Type "?" or "help" for help.))");
     else {
-        GameObj* thing = new GameObj();
+        Thing* thing = new Thing();
         thing->dbref = new_dbref();
-        thing->type = THING;
         thing->name = args;
         thing->desc = "Nondescript object.";
         thing->location = player->dbref;
-        world_db[thing->dbref] = thing;
+        world_db.emplace(thing->dbref, thing), things_db.emplace(thing->dbref, thing);
         std::println("Created object {} with dbref {}.", thing->name, thing->dbref);
     }
 }
 
-void cmd_dig(GameObj* player, const std::string& args) {
+void cmd_dig(Player* player, const std::string& args) {
     if (args.empty())
         std::println(R"(Huh?  (Type "?" or "help" for help.))");
     else {
         (void)player;
-        GameObj* room = new GameObj();
+        Room* room = new Room();
         room->dbref = new_dbref();
         room->name = args;
         room->desc = "Nondescript room.";
         room->location = room->dbref;
-        world_db[room->dbref] = room;
+        world_db.emplace(room->dbref, room), rooms_db.emplace(room->dbref, room);
         std::println("Created room {} with dbref {}.", room->name, room->dbref);
     }
 }
 
-void cmd_tel(GameObj* player, const std::string& args) {
+void cmd_tel(Player* player, const std::string& args) {
     if (args.empty())
         std::println(R"(Huh?  (Type "?" or "help" for help.))");
     else {
-        size_t dbref{};        
+        int num{};        
         if (auto result = strtoint(args)) {
-            dbref = static_cast<size_t>(*result);
+            num = *result;
             }
         else
             return;
-        if (dbref < 0 || world_db[dbref]->type != ROOM) {
+        if (num < 0 || !rooms_db.contains(num)) {
             std::println("Invalid room dbref.");
             return;
         }
-        player->location = dbref;
+        player->location = num;
         cmd_look(player, "");
     }
 }
 
-void cmd_listobjects(GameObj* player, const std::string& args) {
+void cmd_listobjects(Player* player, const std::string& args) {
     if (args.empty()) {
         (void)player;
         std::println("dbref - type      - name");
         std::println("{:-<45}", "");
-        for (const auto& obj : world_db) {
-            std::println("#{:<5}- {:<10}- {:<25}", obj->dbref, to_string(obj->type), obj->name);
+        for (const auto& [dbref, obj] : world_db) {
+            std::println("#{:<5}- {:<10}- {:<25}", obj->dbref, obj->type, obj->name);
             }
     }
     else
         std::println(R"(Huh?  (Type "?" or "help" for help.))");
 }
 
-void cmd_lock(GameObj* player, const std::string& args) {
+void cmd_lock(Player* player, const std::string& args) {
     if (args.empty())
         std::println(R"(Huh?  (Type "?" or "help" for help.))");
     else {
         bool found = false;
-        for (const auto& obj : world_db) {
+        for (const auto& [dbref, obj] : things_db) {
             if ((obj->location == player->location) && str_tolower(obj->name) == str_tolower(args)) {
                 obj->lock = !obj->lock;
                 if (obj->lock)
@@ -444,31 +403,30 @@ void cmd_lock(GameObj* player, const std::string& args) {
     }
 }
 
-void cmd_open(GameObj* player, const std::string& args) {
+void cmd_open(Player* player, const std::string& args) {
     if (args.empty())
         std::println(R"(Huh?  (Type "?" or "help" for help.))");
     else {
         if (auto pos = args.find('='); pos != std::string::npos) {
             auto arg1 = args.substr(0, pos);
             auto arg2 = args.substr(pos + 1);
-            size_t dbref{};        
+            int num{};        
             if (auto result = strtoint(arg2)) {
-                dbref = static_cast<size_t>(*result);
+                num = *result;
             }
             else
                 return;
-            if (dbref < 0 || world_db[dbref]->type != ROOM) {
+            if (num < 0 || !rooms_db.contains(num)) {
                 std::println("Invalid room dbref.");
                 return;
             }
-            GameObj* exit = new GameObj();
+            Exit* exit = new Exit();
             exit->dbref = new_dbref();
-            exit->type = EXIT;
             exit->name = arg1;
             exit->desc = "Nondescript exit.";
             exit->location = player->location;
-            exit->destination = dbref;
-            world_db[exit->dbref] = exit;
+            exit->destination = num;
+            world_db.emplace(exit->dbref, exit), exits_db.emplace(exit->dbref, exit);
             std::println("Created exit {} with dbref {} leading to {}.", exit->name, exit->dbref, world_db[exit->destination]->name);
             }
         else {
@@ -478,7 +436,7 @@ void cmd_open(GameObj* player, const std::string& args) {
     }
 }
 
-void cmd_alias(GameObj* player, const std::string& args) {
+void cmd_alias(Player* player, const std::string& args) {
     if (args.empty())
         std::println(R"(Huh?  (Type "?" or "help" for help.))");
     else {
@@ -486,9 +444,8 @@ void cmd_alias(GameObj* player, const std::string& args) {
             auto arg1 = args.substr(0, pos);
             auto arg2 = args.substr(pos + 1);
             bool found = false;
-        for (const auto& obj : world_db) {
-            if ((obj->type == EXIT) && (obj->location == player->location) &&
-                str_tolower(obj->name) == str_tolower(arg1)) {
+        for (const auto& [dbref, obj] : exits_db) {
+            if ((obj->location == player->location) && str_tolower(obj->name) == str_tolower(arg1)) {
                 obj->alias = arg2;
                 std::println("Alias {} added to exit {}.", obj->alias, obj->name);
                 found = true;
@@ -504,7 +461,7 @@ void cmd_alias(GameObj* player, const std::string& args) {
     }
 }
 
-void cmd_desc(GameObj* player, const std::string& args) {
+void cmd_desc(Player* player, const std::string& args) {
     if (args.empty())
         std::println(R"(Huh?  (Type "?" or "help" for help.))");
     else {
@@ -512,12 +469,12 @@ void cmd_desc(GameObj* player, const std::string& args) {
             auto arg1 = args.substr(0, pos);
             auto arg2 = args.substr(pos + 1);
             bool found = false;
-            if (arg1 == "here" && world_db[player->location]->type == ROOM) {
+            if (arg1 == "here" && world_db[player->location]->type == "Room") {
                 world_db[player->location]->desc = arg2;
                 std::println("{} description updated.", world_db[player->location]->name);
                 found = true;
             }
-        for (const auto& obj : world_db) {
+        for (const auto& [dbref, obj] : world_db) {
             if ((obj->location == player->dbref || obj->location == player->location) && 
                                         str_tolower(obj->name) == str_tolower(arg1)) {
                 obj->desc = arg2;
@@ -535,10 +492,18 @@ void cmd_desc(GameObj* player, const std::string& args) {
     }
 }
 
-bool check_exits(GameObj* player, std::string& input) {
+bool check_exits(Player* player, std::string& input) {
+    int loc = player->location;
+    auto it = rooms_db.find(loc);
+    if (it == rooms_db.end())
+        return false;
+
+    Room* current_room = it->second;
+    if (!current_room)
+        return false;
     
-    for (const auto& exit : world_db) {
-        if (exit->type == EXIT && exit->location == player->location && exit->alias == input && exit->type == EXIT) {
+    for (const auto& [dbref, exit] : exits_db) {
+        if (exit->location == loc && exit->alias == input) {
             std::println("You walk towards the exit leading {}.", exit->alias);
             player->location = exit->destination;
             cmd_look(player, "");
@@ -548,7 +513,7 @@ bool check_exits(GameObj* player, std::string& input) {
     return false;
 }   
 
-bool handle_input(GameObj* player) {
+bool handle_input(Player* player) {
     char *input = readline("> ");
     if (!input) return true;
 
@@ -568,7 +533,13 @@ bool handle_input(GameObj* player) {
     else
         verb = line;
         
+//    std::print("> ");
+//    std::cin >> verb;
     verb = str_tolower(verb);
+
+//    std::getline(std::cin, args);
+//    if (args[0] == ' ')
+//        args.erase(0, 1);
 
 // Let's do a simple check if user wants to quit on top of everything
     if (verb == "quit" && args.empty()) {
@@ -586,8 +557,8 @@ bool handle_input(GameObj* player) {
     }
 
     // 2. Try object-specific commands on accessible Things
-    for (auto& thing : world_db) {
-        if ((thing->location == player->location || thing->location == player->dbref) && thing->type == THING) {
+    for (auto& [_, thing] : things_db) {
+        if (thing->location == player->location || thing->location == player->dbref) {
             if (thing->object_commands.contains(verb)) {
                 thing->object_commands[verb](player, thing, args);
                 return true;

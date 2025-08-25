@@ -1,0 +1,43 @@
+0. General commands/functions:
+command aliases, i.e. `l` for `look` etc 
+pose
+partial/fuzzy search
+ncurses / ftxui
+@rp mode
+
+1. Building/admin @commands:
+@name <obj>=<name>
+@ex <obj>
+@zone <room>=<zone dbref>
+
+2. Space system
+nav status
+nav passive <contact>
+sci dock/undock
+Wormhole object
+power generation
+basic engineering
+fuel consumption
+
+3. Health / Combat
+
+
+4. Build world
+ChR Khellian
+Ch? Outpost
+OOC Room
+
+5. Softcode:
+Turbolifts
+Transporters
+Communicators
+Tricorders
+Handheld weapons
+
+
+6. Help index
+separate into `help` noargs gives sections index
+`help space`
+`help general`
+`help admin`
+etc...

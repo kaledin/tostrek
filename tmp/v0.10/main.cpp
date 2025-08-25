@@ -1,30 +1,42 @@
 #include <atomic>
 #include <print>
 #include <fstream>
+#include <unordered_map>
 #include "globals.hpp"
 #include <thread>
 #include "space.hpp"
-#include "objects.hpp"
+#include "classes.hpp"
+#include "sp_classes.hpp"
 #include "handle_input.hpp"
 #include "serialization.hpp"
 
 using json = nlohmann::json;
 
 // global object storage
-std::vector<GameObj*> world_db;
+std::unordered_map<int, GameObj*> world_db;
+std::unordered_map<int, Room*> rooms_db;
+std::unordered_map<int, Player*> players_db;
+std::unordered_map<int, Exit*> exits_db;
+std::unordered_map<int, Thing*> things_db;
+std::unordered_map<int, Ship*> ships_db;
 
 std::atomic<bool> running{false};
 
-void cleanup(std::vector<GameObj*>& db) {
-    for (auto& obj : db)
+void cleanup(std::unordered_map<int, GameObj*>& db) {
+    for (auto& [_, obj] : db)
          delete obj;
     db.clear();
+    rooms_db.clear();
+    players_db.clear();
+    exits_db.clear();
+    things_db.clear();
+    ships_db.clear();
 }
 
 int main() {
 
     load_world("world.json");
-    GameObj* player = world_db[1];
+    Player* player = players_db[1];
 
     // Global control flag`  
     running = true;

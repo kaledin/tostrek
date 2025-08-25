@@ -1,0 +1,24 @@
+--------------------- ChR Khellian -- Helm Console ----------------------------
+[32mHELM CONSOLE -- Seats you or removes you from the console.[0m
+[32mNAV HELP -- Display this help screen.[0m
+[32mNAV WINDOW -- Experimental auto-updated UI.[0m
+SCI DOCK -- Request automated docking with a starbase.
+SCI UNDOCK -- Request automated undocking from a starbase.
+[32mNAV PASSIVE -- Long range scan information.[0m
+NAV PASSIVE <Contact> -- Long range scan of a contact
+NAV STATUS -- Complete status report on position
+[32mNAV WARP <#> -- Brings ship to specified warp speed. (1.0 --> ?)[0m
+[32mNAV IMP <#> -- Brings ship to specified impulse speed. (-0.33 --> 0.99)[0m
+[32mNAV FULL STOP -- Brings ship to a full stop.[0m
+[32mNAV HEADING <Bearing>/<Mark> -- Places ship on specified course.[0m
+NAV PILOT <Waypoint> -- Set autopilot course to waypoint.
+NAV PREFIX <Number> -- Establish control over ship which matches the prefix.
+NAV PREFIX OFF -- Disengages prefix control over other ship.
+NAV LIST FULL -- Lists stored waypoints and all info.
+NAV LIST -- Lists stored waypoint labels.
+NAV STORE <Label> -- Records current position as labelled waypoint.
+NAV DEL <Label> -- Removes waypoint from list.
+NAV ADD -- Interactively add a new waypoint.
+NAV ORBIT <Tag>=<Altitude> -- Establish orbit. Either STANDARD or HIGH.
+NAV SPECS -- Specifications of the navigation systems.
+-------------------------------------------------------------------------------
