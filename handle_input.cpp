@@ -11,6 +11,7 @@ std::vector<size_t> free_list;
 // global commands register:
 std::unordered_map<std::string, CommandFn> command_table = {
     { "look", cmd_look },
+    { "l", cmd_look},
     { "say", cmd_say },
     { "inv", cmd_inv },
     { "help", cmd_help },
