@@ -7,6 +7,7 @@
 #include "objects.hpp"
 #include "handle_input.hpp"
 #include "serialization.hpp"
+#include <readline/history.h>
 
 using json = nlohmann::json;
 
@@ -50,6 +51,7 @@ int main() {
     space_thread.join();
     save_world("world.json");    
     cleanup(world_db);
-    
+    clear_history();
+        
     return 0;
 }

@@ -46,10 +46,12 @@ std::ostream& operator<<(std::ostream& os, ObjectType t) {
 }
 
 // Create a dummy object
-GameObj* make_dummy() {
+GameObj* make_dummy(size_t dbref) {
     GameObj* dummy = new GameObj{};
+    dummy->type = THING;
+    dummy->dbref = dbref;
     dummy->name = "DUMMY";
-    dummy->location = 0; // could be "Deleted Objects" dbref later
+    dummy->location = 6; // could be "Deleted Objects" dbref later
     return dummy;
 }
 
@@ -74,7 +76,7 @@ void delete_object(size_t dbref) {
     }
 
     // replace with dummy at the same index
-    world_db[dbref] = make_dummy();
+    world_db[dbref] = make_dummy(dbref);
 
     // mark dbref reusable
     free_list.push_back(dbref);
@@ -176,7 +178,7 @@ void cmd_look(GameObj* player, const std::string& args) {
                         std::println("{}{}{}", RED, player1->name, CLR_RESET);
                 }
                 for (const auto& thing : world_db) {
-                    if (thing->location == obj->dbref && thing->type == THING)
+                    if (thing->location == obj->dbref && (thing->type == THING || thing->type == SHIP))
                         std::println("{}{}{}", BLUE, thing->name, CLR_RESET);
                 }
                 if (obj->type == ROOM) {
@@ -372,8 +374,11 @@ void cmd_create(GameObj* player, const std::string& args) {
         thing->name = args;
         thing->desc = "Nondescript object.";
         thing->location = player->dbref;
+        if (thing->dbref >= world_db.size())
+            world_db.resize(thing->dbref + 1, nullptr);
         world_db[thing->dbref] = thing;
         std::println("Created object {} with dbref {}.", thing->name, thing->dbref);
+        std::println("{} {}", world_db[thing->dbref]->name, world_db[thing->dbref]->location);
     }
 }
 
@@ -402,7 +407,7 @@ void cmd_tel(GameObj* player, const std::string& args) {
             }
         else
             return;
-        if (dbref < 0 || world_db[dbref]->type != ROOM) {
+        if (dbref >= world_db.size() || world_db[dbref]->type != ROOM) {
             std::println("Invalid room dbref.");
             return;
         }
@@ -457,7 +462,7 @@ void cmd_open(GameObj* player, const std::string& args) {
             }
             else
                 return;
-            if (dbref < 0 || world_db[dbref]->type != ROOM) {
+            if (dbref >= world_db.size() || world_db[dbref]->type != ROOM) {
                 std::println("Invalid room dbref.");
                 return;
             }

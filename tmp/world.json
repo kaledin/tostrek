@@ -170,23 +170,23 @@
         ],
         "curspeed": 0.0,
         "dbref": 6,
-        "desc": "All destroyed dummy objects live here.",
+        "desc": "A simple LCD screen that is currently turned off.",
         "destination": 0,
         "heading": [
             0.0,
             0.0
         ],
-        "location": 6,
+        "location": 1,
         "lock": false,
         "mannedby": 0,
         "maxwarp": 0.0,
-        "name": "The Graveyard",
+        "name": "PADD",
         "race": "",
         "shipref": 0,
         "sp_class": "",
         "sp_empire": "",
         "sp_type": "",
-        "type": 0
+        "type": 2
     },
     {
         "alias": "fore",
@@ -434,9 +434,9 @@
     {
         "alias": "",
         "coords": [
-            214.77511714244488,
-            -22988.16758142861,
-            1368.1370124276223
+            219.31959752417484,
+            -23013.940610396978,
+            1340.0724589715323
         ],
         "curspeed": 0.299792458,
         "dbref": 16,
@@ -461,9 +461,9 @@
     {
         "alias": "",
         "coords": [
-            153.17543732307482,
-            -22663.91208046072,
-            1694.2085482213952
+            169.66951423169544,
+            -22752.9061556957,
+            1603.698880229531
         ],
         "curspeed": 1.0,
         "dbref": 17,
@@ -521,7 +521,7 @@
         ],
         "curspeed": 0.0,
         "dbref": 19,
-        "desc": "Nondescript object.",
+        "desc": "A tricorder.",
         "destination": 0,
         "heading": [
             0.0,

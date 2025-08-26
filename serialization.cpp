@@ -55,7 +55,7 @@ void from_json(const json& j, GameObj& r) {
     r.sp_class = j.value("sp_class", "");
     r.coords = j.value("coords", std::array<double, 3>{0,0,0});
     r.maxwarp = j.value("maxwarp", 0);
-    r.curspeed = j.value("curspeed", 0);
+    r.curspeed = j.value("curspeed", 0.0);
     r.heading = j.value("heading", std::array<double, 2>{0,0});
 }
 

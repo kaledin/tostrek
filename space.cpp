@@ -101,9 +101,8 @@ void navconsole(GameObj* player, GameObj* self, const std::string& args) {
 	    }
 	    std::println("------------------------------------------------------------------------------");
 	}
-/*
+
     else if (args == "window") {
-//        running = true;
         initscr();             // Start ncurses
         cbreak();              // Disable line buffering
         noecho();              // Don't echo user input
@@ -113,22 +112,22 @@ void navconsole(GameObj* player, GameObj* self, const std::string& args) {
         while (true) {
             clear();
             mvprintw(0, 0, "---------------------- %s -- Long Range Scan -----------------------",
-                     ships_db[self->shipref]->name.c_str());
+                     world_db[self->shipref]->name.c_str());
 
             int row = 1;
-            for (const auto& [key, value] : ships_db[self->shipref]->lrs_contacts) {
-                auto contact = ships_db[value];
+            for (const auto& [key, value] : world_db[self->shipref]->lrs_contacts) {
+                auto contact = world_db[value];
                 std::string name = "- - -";
-                if (dist3d(ships_db[self->shipref]->coords, contact->coords) < sectorsize)
+                if (dist3d(world_db[self->shipref]->coords, contact->coords) < sectorsize)
                     name = contact->name;
 
-                auto [pitch, yaw] = calc_pitch_yaw(ships_db[self->shipref]->coords, contact->coords);
+                auto [pitch, yaw] = calc_pitch_yaw(world_db[self->shipref]->coords, contact->coords);
 
                 mvprintw(row++, 0, "%c : %-10s %3.0f/%-3.0f  %-14s %-14s %-s",
                          key,
                          str_toupper(contact->sp_type).c_str(),
                          pitch, yaw,
-                         showdist(dist3d(ships_db[self->shipref]->coords, contact->coords)).c_str(),
+                         showdist(dist3d(world_db[self->shipref]->coords, contact->coords)).c_str(),
                          showspeed(contact->curspeed).c_str(),
                          name.c_str());
             }
@@ -145,7 +144,7 @@ void navconsole(GameObj* player, GameObj* self, const std::string& args) {
 
         endwin(); // Exit ncurses mode
     }
-*/
+
     else if (auto pos = args.find(' '); pos != std::string::npos) {
         auto arg1 = args.substr(0, pos);
         auto arg2 = args.substr(pos + 1);
