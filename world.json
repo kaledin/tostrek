@@ -434,17 +434,17 @@
     {
         "alias": "",
         "coords": [
-            212.7158994694735,
-            -22976.48917767732,
-            1380.853763212413
+            184.6718979177198,
+            -22831.972186290644,
+            1528.2593756784167
         ],
-        "curspeed": 0.299792458,
+        "curspeed": 0.0,
         "dbref": 16,
         "desc": "A Romulan scout.",
         "destination": 18446744073709551615,
         "heading": [
-            100.0,
-            47.0
+            101.0,
+            45.0
         ],
         "location": 15,
         "lock": false,
@@ -461,9 +461,9 @@
     {
         "alias": "",
         "coords": [
-            145.7015587238561,
-            -22623.58664011987,
-            1735.2207415302087
+            75.85945181392138,
+            -22246.752352796753,
+            2118.4726169332816
         ],
         "curspeed": 1.0,
         "dbref": 17,
@@ -538,5 +538,113 @@
         "sp_empire": "",
         "sp_type": "",
         "type": 2
+    },
+    {
+        "alias": "",
+        "coords": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "curspeed": 0.0,
+        "dbref": 20,
+        "desc": "Nondescript room.",
+        "destination": 0,
+        "heading": [
+            0.0,
+            0.0
+        ],
+        "location": 20,
+        "lock": false,
+        "mannedby": 0,
+        "maxwarp": 0.0,
+        "name": "Airlock Room",
+        "race": "",
+        "shipref": 0,
+        "sp_class": "",
+        "sp_empire": "",
+        "sp_type": "",
+        "type": 0
+    },
+    {
+        "alias": "star",
+        "coords": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "curspeed": 0.0,
+        "dbref": 21,
+        "desc": "Nondescript exit.",
+        "destination": 20,
+        "heading": [
+            0.0,
+            0.0
+        ],
+        "location": 3,
+        "lock": false,
+        "mannedby": 0,
+        "maxwarp": 0.0,
+        "name": "Airlock",
+        "race": "",
+        "shipref": 0,
+        "sp_class": "",
+        "sp_empire": "",
+        "sp_type": "",
+        "type": 3
+    },
+    {
+        "alias": "port",
+        "coords": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "curspeed": 0.0,
+        "dbref": 22,
+        "desc": "Nondescript exit.",
+        "destination": 3,
+        "heading": [
+            0.0,
+            0.0
+        ],
+        "location": 20,
+        "lock": false,
+        "mannedby": 0,
+        "maxwarp": 0.0,
+        "name": "Boom Corridor",
+        "race": "",
+        "shipref": 0,
+        "sp_class": "",
+        "sp_empire": "",
+        "sp_type": "",
+        "type": 3
+    },
+    {
+        "alias": "oa",
+        "coords": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "curspeed": 0.0,
+        "dbref": 23,
+        "desc": "Nondescript exit.",
+        "destination": 15,
+        "heading": [
+            0.0,
+            0.0
+        ],
+        "location": 20,
+        "lock": true,
+        "mannedby": 0,
+        "maxwarp": 0.0,
+        "name": "Outer Airlock",
+        "race": "",
+        "shipref": 0,
+        "sp_class": "",
+        "sp_empire": "",
+        "sp_type": "",
+        "type": 3
     }
 ]

@@ -9,8 +9,6 @@
 #include "serialization.hpp"
 #include <readline/history.h>
 
-using json = nlohmann::json;
-
 // global object storage
 std::vector<GameObj*> world_db;
 

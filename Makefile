@@ -3,7 +3,7 @@ ifndef MAKEFLAGS
 MAKEFLAGS += -j$(shell command -v nproc >/dev/null && nproc || sysctl -n hw.ncpu)
 endif
 
-CXX = g++
+CXX = g++-15
 CXXFLAGS = -std=c++23 -Wall -Wconversion -Wshadow -Wextra -Werror -Wpedantic -g
 LDFLAGS = -lncurses -lreadline
 SRC = main.cpp handle_input.cpp serialization.cpp space.cpp

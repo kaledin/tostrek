@@ -5,6 +5,7 @@
 #include <optional>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <charconv>
 
 std::vector<size_t> free_list;
 
@@ -40,10 +41,6 @@ std::string to_string(ObjectType t) {
         case ObjectType::SHIP:  return "Ship";
     }
     return "Unknown"; // just in case
-}
-
-std::ostream& operator<<(std::ostream& os, ObjectType t) {
-    return os << to_string(t);
 }
 
 // Create a dummy object
@@ -128,32 +125,24 @@ void wrapchar(std::string& str, size_t size) {
 }
 
 std::optional<int> strtoint(const std::string& str) {
-    try {
-        size_t pos;
-        int intstr = std::stoi(str, &pos);
-        if (pos != str.length()) {
-            std::println("Invalid input: not a number.");
-            return std::nullopt;
-        }
-        return intstr;
-    } catch (...) {
-        std::println("Invalid input.");
-        return std::nullopt; // Indicate failure
+    int value = 0;
+    auto result = std::from_chars(str.data(), str.data() + str.size(), value);
+    if (result.ec == std::errc() && result.ptr == str.data() + str.size())
+        return value;
+    else {
+        std::println("Invalid input: not an integer.");
+        return std::nullopt;
     }
 }
 
 std::optional<double> strtodbl(const std::string& str) {
-    try {
-        size_t pos;
-        double dblstr = std::stod(str, &pos);
-        if (pos != str.length()) {
-            std::println("Invalid input: not a number.");
-            return std::nullopt;
-        }
-        return dblstr;
-    } catch (...) {
-        std::println("Invalid input.");
-        return std::nullopt; // Indicate failure
+    double value = 0.0;
+    auto result = std::from_chars(str.data(), str.data() + str.size(), value, std::chars_format::general);
+    if (result.ec == std::errc() && result.ptr == str.data() + str.size())
+        return value;
+    else {
+        std::println("Invalid input: not a floating point number.");
+        return std::nullopt;
     }
 }
 
@@ -232,8 +221,7 @@ void cmd_inv(GameObj* player, const std::string& args) {
         std::println(R"(Huh?  (Type "?" or "help" for help.))");
 }
 
-void cmd_help(GameObj *player, const std::string &args) {
-    (void)player;
+void cmd_help([[maybe_unused]] GameObj *player, const std::string &args) {
     if (args.empty()) {
         std::ifstream file("help.txt");
             if (file) {
@@ -390,9 +378,12 @@ void cmd_dig(GameObj* player, const std::string& args) {
         (void)player;
         GameObj* room = new GameObj();
         room->dbref = new_dbref();
+        room->type = ROOM;
         room->name = args;
         room->desc = "Nondescript room.";
         room->location = room->dbref;
+        if (room->dbref >= world_db.size())
+            world_db.resize(room->dbref + 1, nullptr);
         world_db[room->dbref] = room;
         std::println("Created room {} with dbref {}.", room->name, room->dbref);
     }
@@ -474,6 +465,8 @@ void cmd_open(GameObj* player, const std::string& args) {
             exit->desc = "Nondescript exit.";
             exit->location = player->location;
             exit->destination = dbref;
+            if (exit->dbref >= world_db.size())
+                world_db.resize(exit->dbref + 1, nullptr);
             world_db[exit->dbref] = exit;
             std::println("Created exit {} with dbref {} leading to {}.", exit->name, exit->dbref, world_db[exit->destination]->name);
             }
@@ -546,8 +539,12 @@ bool check_exits(GameObj* player, std::string& input) {
     for (const auto& exit : world_db) {
         if (exit->type == EXIT && exit->location == player->location && exit->alias == input && exit->type == EXIT) {
             std::println("You walk towards the exit leading {}.", exit->alias);
-            player->location = exit->destination;
-            cmd_look(player, "");
+            if (exit->lock == true)
+                std::println("The door appears to be locked.");
+            else {
+                player->location = exit->destination;
+                cmd_look(player, "");
+            }
             return true;
         }
     }

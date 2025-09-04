@@ -9,6 +9,8 @@
 #include <fstream>
 #include <cctype>
 #include <ncurses.h>
+#include <algorithm>
+
 
 const double c = 0.299792458;
 const double sectorsize = 20000.0;

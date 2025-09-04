@@ -1,8 +1,10 @@
 #pragma once
+#include <map>
+#include <string>
+#include <vector>
+#include <array>
+#include <functional>
 
-#include "json.hpp"
-
-using json = nlohmann::json;
 
 struct CoordsFmt {
     std::string quadrant;
