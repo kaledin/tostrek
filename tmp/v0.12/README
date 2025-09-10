@@ -1,0 +1,33 @@
+      _____________________________________________________________
+     /          _____             __   __       ___  __       ___  \
+    /          |  |  |      |\ | |  ` |  ` __ |   / |  | |  /   /   |
+   /          |   |   |     | \| |    |       |  /  |  | | /   /    |
+  /           |   |   |     `  ' `--' `--'    ' '   `--' '    '     |
+ /     ==<===|====|====|========== U.S.S. ENTERPRISE =============  |
+<_-----------|---------|--------------------------------------------|
+  \__         \       /             \      \            /        /  |
+     `------_  \_____/_______________\______\__________/________/__/__
+           / ||  ===   ==<============ NCC-1701/7 ======--------  ===/
+           \_||___________________________________________________==/
+                -===-                                             -===-
+
+TOS Trek++ is a simple singleplayer text RPG in development. I took some inspiration from TOS TrekMUSE, a long-time defunct MUSH that I used to play in the early late 1990s and early 2000s.
+
+My plan is to add some basic orientation commands like every MUD/MUSH has, then expand it by adding a space system, AI-driven (God forbid) NPCs.
+
+What has been implemented so far: check 'help.txt' file or 'help' command in-game. TL;DR not much :)
+
+This is singleplayer intentionally, I will be the only person playing it, I admit it. 
+
+Requirements:
+* tested on macos and Linux (but should run in Windows also if you have a dev environment setup there)
+* a C++ compiler capable of -std=c++23
+
+Installation:
+* just run `make`
+
+3rd party software included:
+* nlohmann/json serialization/deserialization, which is distributed under MIT license.
+
+All Star Trek stuff is copyright by Paramount Pictures.
+
