@@ -76,7 +76,7 @@ void navconsole(GameObj* player, GameObj* self, const std::string& args) {
     }
     else if (args == "full stop") {
     	std::println("Acknowledged: decelerating to full stop.");
-	    world_db[self->shipref]->curspeed = 0;
+	    world_db[self->shipref]->targetspeed = 0;
     }
     else if (args == "passive") {
 	    std::println("---------------------- {} -- Long Range Scan -----------------------",
@@ -164,7 +164,7 @@ void navconsole(GameObj* player, GameObj* self, const std::string& args) {
 	        if (auto result = strtodigit<double>(arg2)) {
 		        if (*result > 0 && *result < world_db[self->shipref]->maxwarp) {
 		            std::println("Acknowledged: accelerating to WARP {}.", *result);
-		            world_db[self->shipref]->curspeed = warp2gms(*result);
+		            world_db[self->shipref]->targetspeed = warp2gms(*result);
 		        }
 		        else
 		            std::println("Error: cannot accelerate to WARP {}.", *result);
@@ -269,20 +269,29 @@ void update_lrs(GameObj* obj) {
 
 void tick_loop() {
     while (running) {
-	tick_all_spaceobjs(); // your function`  
+	tick_all_spaceobjs();  
 	std::this_thread::sleep_for(std::chrono::milliseconds(100));  
 	}  
 }
 
 void tick_all_spaceobjs() {  
 	for (auto& obj : world_db) { 
-    if (obj->type != SHIP)
-      continue;
+        if (obj->type != SHIP)
+            continue;
 		double delta_time = 0.1;
+        double epsilon = 1e-6;
+        
+        if (obj->curspeed < obj->targetspeed)
+            obj->curspeed += obj->accel * delta_time;
+        if (obj->curspeed > obj->targetspeed)
+            obj->curspeed -= obj->accel * delta_time;
+        if (std::fabs(obj->curspeed - obj->targetspeed) < epsilon)
+            obj->curspeed = obj->targetspeed;
+
 		obj->coords[0] += obj->curspeed * std::cos(deg2rad(obj->heading[1])) * std::cos(deg2rad(obj->heading[0])) * delta_time;
 		obj->coords[1] += obj->curspeed * std::cos(deg2rad(obj->heading[1])) * std::sin(deg2rad(obj->heading[0])) * delta_time;
 		obj->coords[2] += obj->curspeed * std::sin(deg2rad(obj->heading[1])) * delta_time;
-	  update_lrs(obj);
+	    update_lrs(obj);
 	}  
 }
 

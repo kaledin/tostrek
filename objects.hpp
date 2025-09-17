@@ -53,6 +53,8 @@ struct GameObj {
 	std::string sp_empire;
 	double maxwarp;
 	double curspeed;
+    double targetspeed;
+    double accel;
 	std::array<double, 3> coords;
 	std::array <double, 2> heading;
 	std::map<char, size_t> lrs_contacts;

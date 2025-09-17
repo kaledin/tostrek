@@ -1,5 +1,6 @@
 [
     {
+        "accel": 0.0,
         "alias": "",
         "attribs": {},
         "coords": [
@@ -24,9 +25,11 @@
         "sp_class": "",
         "sp_empire": "",
         "sp_type": "",
+        "targetspeed": 0.0,
         "type": 0
     },
     {
+        "accel": 0.0,
         "alias": "",
         "attribs": {},
         "coords": [
@@ -51,9 +54,11 @@
         "sp_class": "",
         "sp_empire": "",
         "sp_type": "",
+        "targetspeed": 0.0,
         "type": 1
     },
     {
+        "accel": 0.0,
         "alias": "",
         "attribs": {},
         "coords": [
@@ -78,9 +83,11 @@
         "sp_class": "",
         "sp_empire": "",
         "sp_type": "",
+        "targetspeed": 0.0,
         "type": 2
     },
     {
+        "accel": 0.0,
         "alias": "",
         "attribs": {},
         "coords": [
@@ -105,9 +112,11 @@
         "sp_class": "",
         "sp_empire": "",
         "sp_type": "",
+        "targetspeed": 0.0,
         "type": 0
     },
     {
+        "accel": 0.0,
         "alias": "aft",
         "attribs": {},
         "coords": [
@@ -132,12 +141,14 @@
         "sp_class": "",
         "sp_empire": "",
         "sp_type": "",
+        "targetspeed": 0.0,
         "type": 3
     },
     {
+        "accel": 0.0,
         "alias": "",
         "attribs": {
-            "mannedby": "Nobody"
+            "mannedby": "1"
         },
         "coords": [
             0.0,
@@ -161,9 +172,11 @@
         "sp_class": "",
         "sp_empire": "",
         "sp_type": "",
+        "targetspeed": 0.0,
         "type": 2
     },
     {
+        "accel": 0.0,
         "alias": "",
         "attribs": {},
         "coords": [
@@ -188,9 +201,11 @@
         "sp_class": "",
         "sp_empire": "",
         "sp_type": "",
+        "targetspeed": 0.0,
         "type": 0
     },
     {
+        "accel": 0.0,
         "alias": "fore",
         "attribs": {},
         "coords": [
@@ -215,9 +230,11 @@
         "sp_class": "",
         "sp_empire": "",
         "sp_type": "",
+        "targetspeed": 0.0,
         "type": 3
     },
     {
+        "accel": 0.0,
         "alias": "",
         "attribs": {},
         "coords": [
@@ -242,9 +259,11 @@
         "sp_class": "",
         "sp_empire": "",
         "sp_type": "",
+        "targetspeed": 0.0,
         "type": 2
     },
     {
+        "accel": 0.0,
         "alias": "",
         "attribs": {},
         "coords": [
@@ -269,9 +288,11 @@
         "sp_class": "",
         "sp_empire": "",
         "sp_type": "",
+        "targetspeed": 0.0,
         "type": 0
     },
     {
+        "accel": 0.0,
         "alias": "",
         "attribs": {},
         "coords": [
@@ -296,9 +317,11 @@
         "sp_class": "",
         "sp_empire": "",
         "sp_type": "",
+        "targetspeed": 0.0,
         "type": 0
     },
     {
+        "accel": 0.0,
         "alias": "port",
         "attribs": {},
         "coords": [
@@ -323,9 +346,11 @@
         "sp_class": "",
         "sp_empire": "",
         "sp_type": "",
+        "targetspeed": 0.0,
         "type": 3
     },
     {
+        "accel": 0.0,
         "alias": "star",
         "attribs": {},
         "coords": [
@@ -350,9 +375,11 @@
         "sp_class": "",
         "sp_empire": "",
         "sp_type": "",
+        "targetspeed": 0.0,
         "type": 3
     },
     {
+        "accel": 0.0,
         "alias": "aft",
         "attribs": {},
         "coords": [
@@ -377,9 +404,11 @@
         "sp_class": "",
         "sp_empire": "",
         "sp_type": "",
+        "targetspeed": 0.0,
         "type": 3
     },
     {
+        "accel": 0.0,
         "alias": "fore",
         "attribs": {},
         "coords": [
@@ -404,9 +433,11 @@
         "sp_class": "",
         "sp_empire": "",
         "sp_type": "",
+        "targetspeed": 0.0,
         "type": 3
     },
     {
+        "accel": 0.0,
         "alias": "",
         "attribs": {},
         "coords": [
@@ -431,15 +462,17 @@
         "sp_class": "",
         "sp_empire": "",
         "sp_type": "",
+        "targetspeed": 0.0,
         "type": 0
     },
     {
+        "accel": 1.5,
         "alias": "",
         "attribs": {},
         "coords": [
-            1100.1179699185398,
-            -19160.318535028087,
-            13174.387139288925
+            616.9472293469281,
+            -20487.819234489314,
+            8215.076711173842
         ],
         "curspeed": 0.0,
         "dbref": 16,
@@ -458,15 +491,17 @@
         "sp_class": "Scout",
         "sp_empire": "Romulan",
         "sp_type": "Ship",
+        "targetspeed": 0.0,
         "type": 4
     },
     {
+        "accel": 0.0,
         "alias": "",
         "attribs": {},
         "coords": [
-            42.56203405464349,
-            -22067.09556341238,
-            2301.1890091921514
+            2.396379582635677,
+            -21850.381084886412,
+            2521.594192888319
         ],
         "curspeed": 1.0,
         "dbref": 17,
@@ -485,9 +520,11 @@
         "sp_class": "Transport",
         "sp_empire": "Nimbussian",
         "sp_type": "Ship",
+        "targetspeed": 0.0,
         "type": 4
     },
     {
+        "accel": 0.0,
         "alias": "",
         "attribs": {},
         "coords": [
@@ -512,9 +549,11 @@
         "sp_class": "M-Class",
         "sp_empire": "Klingon",
         "sp_type": "Planet",
+        "targetspeed": 0.0,
         "type": 4
     },
     {
+        "accel": 0.0,
         "alias": "",
         "attribs": {},
         "coords": [
@@ -539,9 +578,11 @@
         "sp_class": "",
         "sp_empire": "",
         "sp_type": "",
+        "targetspeed": 0.0,
         "type": 2
     },
     {
+        "accel": 0.0,
         "alias": "",
         "attribs": {},
         "coords": [
@@ -566,9 +607,11 @@
         "sp_class": "",
         "sp_empire": "",
         "sp_type": "",
+        "targetspeed": 0.0,
         "type": 0
     },
     {
+        "accel": 0.0,
         "alias": "star",
         "attribs": {},
         "coords": [
@@ -593,9 +636,11 @@
         "sp_class": "",
         "sp_empire": "",
         "sp_type": "",
+        "targetspeed": 0.0,
         "type": 3
     },
     {
+        "accel": 0.0,
         "alias": "port",
         "attribs": {},
         "coords": [
@@ -620,9 +665,11 @@
         "sp_class": "",
         "sp_empire": "",
         "sp_type": "",
+        "targetspeed": 0.0,
         "type": 3
     },
     {
+        "accel": 0.0,
         "alias": "oa",
         "attribs": {},
         "coords": [
@@ -647,6 +694,7 @@
         "sp_class": "",
         "sp_empire": "",
         "sp_type": "",
+        "targetspeed": 0.0,
         "type": 3
     }
 ]

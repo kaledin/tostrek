@@ -25,6 +25,8 @@ void to_json(json& j, const GameObj& r) {
         {"coords", r.coords},
         {"maxwarp", r.maxwarp},
         {"curspeed", r.curspeed},
+        {"targetspeed", r.targetspeed},
+        {"accel", r.accel},
         {"heading", r.heading},
         {"attribs", r.attribs}
     };
@@ -51,6 +53,8 @@ void from_json(const json& j, GameObj& r) {
     r.coords = j.value("coords", std::array<double, 3>{0,0,0});
     r.maxwarp = j.value("maxwarp", 0);
     r.curspeed = j.value("curspeed", 0.0);
+    r.targetspeed = j.value("targetspeed", 0.0);
+    r.accel = j.value("accel", 0.0);
     r.heading = j.value("heading", std::array<double, 2>{0,0});
     if (j.contains("attribs"))
         r.attribs = j.at("attribs").get<std::unordered_map<std::string, std::string>>();
