@@ -29,6 +29,82 @@ constexpr double rad2deg(double rad) {
     return rad * (180.0 / std::numbers::pi);
 }
 
+
+CoordsFmt parse_coords(const std::string& input) {
+    std::vector<std::string> fields;
+    std::string current;
+
+    for (char ch : input) {
+        if (ch == ' ' || ch == ':') {
+            if (!current.empty()) {
+                fields.push_back(current);
+                current.clear();
+            }
+        } else {
+            current += ch;
+        }
+    }
+
+    if (!current.empty()) {
+        fields.push_back(current);
+    }
+    return {fields[0], std::stoi(fields[1]), std::stoi(fields[2]), std::stoi(fields[3]), std::stod(fields[4]), std::stod(fields[5]), std::stod(fields[6])};
+}
+
+std::array<double, 3> fmt2abs(const CoordsFmt& input) {
+    // logic to convert to absolute xyz goes here
+    std::array<double, 3> result;
+    int x_sign = 1, y_sign = 1, z_sign = 1;
+
+    if (input.quadrant.starts_with("Beta") || input.quadrant.starts_with("Gamma"))
+        x_sign = -1;
+    if (input.quadrant.starts_with("Gamma") || input.quadrant.starts_with("Delta"))
+        y_sign = -1;
+    if (input.quadrant.ends_with("-"))
+        z_sign = -1;
+
+    result[0] = x_sign * (input.sx * sectorsize + (input.x + 10000));
+    result[1] = y_sign * (input.sy * sectorsize + (input.y + 10000));
+    result[2] = z_sign * (input.sz * sectorsize + (input.z + 10000));
+    return result;
+}
+
+CoordsFmt abs2fmt(const std::array<double, 3>& input) {
+    // logic to convert to formatted goes here
+    CoordsFmt result;
+    if (input[0] >= 0 && input[1] >= 0 && input[2] > 0)
+	result.quadrant = "Alpha+";
+    else if (input[0] >= 0 && input[1] >= 0 && input[2] <= 0)
+	result.quadrant = "Alpha-";
+    else if (input[0] < 0 && input[1] >= 0 && input[2] > 0)
+	result.quadrant = "Beta+";
+    else if (input[0] < 0 && input[1] >= 0 && input[2] <= 0)
+	result.quadrant = "Beta-";
+    else if (input[0] < 0 && input[1] < 0 && input[2] > 0)
+	result.quadrant = "Gamma+";
+    else if (input[0] < 0 && input[1] < 0 && input[2] <= 0)
+	result.quadrant = "Gamma-";
+    else if (input[0] >= 0 && input[1] < 0 && input[2] > 0)
+	result.quadrant = "Delta+";
+    else if (input[0] >= 0 && input[1] < 0 && input[2] <= 0)
+	result.quadrant = "Delta-";
+
+
+    result.sx = static_cast<int>(std::abs(input[0] / sectorsize));
+    result.sy = static_cast<int>(std::abs(input[1] / sectorsize));
+    result.sz = static_cast<int>(std::abs(input[2] / sectorsize));
+
+    result.x = std::round((std::fmod(std::abs(input[0]),sectorsize) - 10000)*100) / 100;
+    result.y = std::round((std::fmod(std::abs(input[1]),sectorsize) - 10000)*100) / 100;
+    result.z = std::round((std::fmod(std::abs(input[2]),sectorsize) - 10000)*100) / 100;
+
+    return result;
+}
+
+std::string fmtsect(int sx, int sy, int sz) {
+    return std::format("{}:{}:{}", sx, sy, sz);
+}
+
 void console_init() {
     GameObj* helm = world_db[5]; // this is a dirty hack, 
  
@@ -103,6 +179,27 @@ void navconsole(GameObj* player, GameObj* self, const std::string& args) {
 	    }
 	    std::println("------------------------------------------------------------------------------");
 	}
+
+    else if (args == "status") {
+	    std::println("---------------------- {} -- Navigation ----------------------------",
+				    world_db[self->shipref]->name);
+	    std::println("{}{:^26}{}{:^29}{}{:^24}{}", CYAN, "CURRENT LOCATION", GREEN, "AUTOPILOT DESTINATON", YELLOW, "SHIP STATUS", CLR_RESET);
+	    std::println("{:>10}  {}{:<15}{} {:>10}  {}{:<15}{} {:>10}  {}{:<13}{}",
+				    "Quadrant:", CYAN, abs2fmt(world_db[self->shipref]->coords).quadrant, CLR_RESET, "Quadrant:", GREEN, "Alpha-", CLR_RESET, "Autopilot:", RED, "OFF", CLR_RESET); 
+	    std::println("{:>10}  {}{:<15}{} {:>10}  {}{:<15}{} {:>10}  {}{:<13}{}",
+				    "Sector:", CYAN, fmtsect(abs2fmt(world_db[self->shipref]->coords).sx, abs2fmt(world_db[self->shipref]->coords).sy,abs2fmt(world_db[self->shipref]->coords).sz),
+				    CLR_RESET, "Sector:", GREEN, "6:26:12", CLR_RESET, "Shields:", RED, "DOWN", CLR_RESET); 
+	    std::println("{}{:>10}{}  {:<15} {}{:>10}{}  {:<15} {:>10}  {}{:<13}{}",
+				    CYAN, "X ", CLR_RESET, abs2fmt(world_db[self->shipref]->coords).x, GREEN, "X ", CLR_RESET, "5.28", "ETA:", RED, "NONE", CLR_RESET); 
+	    std::println("{}{:>10}{}  {:<15} {}{:>10}{}  {:<15} {:>10}  {}{:<13}{}",
+				    CYAN, "Y ", CLR_RESET, abs2fmt(world_db[self->shipref]->coords).y, GREEN, "Y ", CLR_RESET, "6.19", "Bearing:", YELLOW, world_db[self->shipref]->heading[0], CLR_RESET); 
+	    std::println("{}{:>10}{}  {:<15} {}{:>10}{}  {:<15} {:>10}  {}{:<13}{}",
+				    CYAN, "Z ", CLR_RESET, abs2fmt(world_db[self->shipref]->coords).z, GREEN, "Z ", CLR_RESET, "899.40", "Mark:", YELLOW, world_db[self->shipref]->heading[1], CLR_RESET); 
+	    std::println("{:>10}  {}{:<15}{} {:>10}  {}{:<15}{} {:>10}  {}{:<13}{}",
+				    "Speed:", CYAN, showspeed(world_db[self->shipref]->curspeed), CLR_RESET, "Speed", GREEN, showspeed(world_db[self->shipref]->targetspeed), CLR_RESET, "Dist:", YELLOW, "NONE", CLR_RESET);
+	    std::println("{:>66}  {}{}{}", "MaxSpeed:",  YELLOW, showspeed(warp2gms(world_db[self->shipref]->maxwarp)), CLR_RESET); 
+	    std::println("------------------------------------------------------------------------------");
+    }
 
     else if (args == "window") {
         initscr();             // Start ncurses
@@ -279,14 +376,12 @@ void tick_all_spaceobjs() {
         if (obj->type != SHIP)
             continue;
 		double delta_time = 0.1;
-        double epsilon = 1e-6;
+        double delta_v = obj->accel * delta_time;
         
         if (obj->curspeed < obj->targetspeed)
-            obj->curspeed += obj->accel * delta_time;
-        if (obj->curspeed > obj->targetspeed)
-            obj->curspeed -= obj->accel * delta_time;
-        if (std::fabs(obj->curspeed - obj->targetspeed) < epsilon)
-            obj->curspeed = obj->targetspeed;
+            obj->curspeed = std::min(obj->curspeed + delta_v, obj->targetspeed);
+        else if (obj->curspeed > obj->targetspeed)
+            obj->curspeed = std::max(obj->curspeed - delta_v, obj->targetspeed);
 
 		obj->coords[0] += obj->curspeed * std::cos(deg2rad(obj->heading[1])) * std::cos(deg2rad(obj->heading[0])) * delta_time;
 		obj->coords[1] += obj->curspeed * std::cos(deg2rad(obj->heading[1])) * std::sin(deg2rad(obj->heading[0])) * delta_time;
