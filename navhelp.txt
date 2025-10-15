@@ -6,7 +6,7 @@ SCI DOCK -- Request automated docking with a starbase.
 SCI UNDOCK -- Request automated undocking from a starbase.
 [32mNAV PASSIVE -- Long range scan information.[0m
 NAV PASSIVE <Contact> -- Long range scan of a contact
-NAV STATUS -- Complete status report on position
+[32mNAV STATUS -- Complete status report on position.[0m
 [32mNAV WARP <#> -- Brings ship to specified warp speed. (1.0 --> ?)[0m
 [32mNAV IMP <#> -- Brings ship to specified impulse speed. (-0.33 --> 0.99)[0m
 [32mNAV FULL STOP -- Brings ship to a full stop.[0m

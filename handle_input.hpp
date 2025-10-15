@@ -36,4 +36,5 @@ void cmd_lock(GameObj* player, const std::string& args);
 void cmd_open(GameObj* player, const std::string& args);
 void cmd_alias(GameObj* player, const std::string& args);
 void cmd_desc(GameObj* player, const std::string& args);
+void cmd_ex(GameObj* player, const std::string& args);
 

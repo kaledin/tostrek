@@ -27,6 +27,7 @@ leave                 - leave an object
 @desc <obj>=<desc>    - describe an object
 @open <name>=<dbref>  - open exit with <name> to room <dbref>
 @lock <obj>           - toggle object's lock
+@ex <obj>             - examine an object
 
 help             - display this help file
 quit             - exit the game

@@ -11,7 +11,7 @@ ncurses / ftxui
 @zone <room>=<zone dbref>
 
 2. Space system
-nav status
+gradual turning
 nav passive <contact>
 sci dock/undock
 Wormhole object

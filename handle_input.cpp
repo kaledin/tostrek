@@ -30,6 +30,7 @@ std::unordered_map<std::string, CommandFn> command_table = {
     { "@open", cmd_open },
     { "@alias", cmd_alias },
     { "@desc", cmd_desc },
+    { "@ex", cmd_ex},
 };
 
 std::string to_string(ObjectType t) {
@@ -510,6 +511,29 @@ void cmd_desc(GameObj* player, const std::string& args) {
             return;
         }
     }
+}
+
+void cmd_ex(GameObj* player, const std::string& args) {
+    if (args.empty())
+        std::println(R"(Huh?  (Type "?" or "help" for help.))");
+    else {
+        bool found = false;
+        for (const auto& obj : world_db) {
+            if ((obj->location == player->location || obj->location == player->dbref) && str_tolower(obj->name) == str_tolower(args)) {
+                std::println("dbref   : {}", obj->dbref);
+                std::println("type    : {}", to_string(obj->type));
+                std::println("name    : {}", obj->name);
+                std::println("desc    : {}", obj->desc);
+                std::println("location: {} - {}", obj->location, world_db[obj->location]->name);
+                
+                found = true;
+            }
+        }
+        if (!found)
+            std::println("I don't see that here.");
+        
+        
+    }    
 }
 
 bool check_exits(GameObj* player, std::string& input) {

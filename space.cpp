@@ -166,6 +166,8 @@ void navconsole(GameObj* player, GameObj* self, const std::string& args) {
 		        lrscolor = CYAN;
 	        else if (world_db[value]->sp_type == "Planet")
 		        lrscolor = GREEN;
+	        else if (world_db[value]->sp_type == "Base")
+		        lrscolor = RED;
 	        if (dist3d(world_db[self->shipref]->coords, world_db[value]->coords)<sectorsize)
 		        name = world_db[value]->name;
 	        else

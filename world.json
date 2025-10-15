@@ -470,17 +470,17 @@
         "alias": "",
         "attribs": {},
         "coords": [
-            190.22646169072019,
-            -19565.69876309068,
-            8063.892403795746
+            1484.674114170754,
+            -16009.233067235196,
+            21262.750798976704
         ],
         "curspeed": 0.0,
         "dbref": 16,
         "desc": "A Romulan scout.",
         "destination": 18446744073709551615,
         "heading": [
-            111.0,
-            11.0
+            70.0,
+            74.0
         ],
         "location": 15,
         "lock": false,
@@ -499,9 +499,9 @@
         "alias": "",
         "attribs": {},
         "coords": [
-            -113.87397662555423,
-            -21223.042381087955,
-            3159.616641553869
+            -204.8104615818256,
+            -20732.393014723584,
+            3658.621897037942
         ],
         "curspeed": 1.0,
         "dbref": 17,
@@ -696,5 +696,63 @@
         "sp_type": "",
         "targetspeed": 0.0,
         "type": 3
+    },
+    {
+        "accel": 0.0,
+        "alias": "",
+        "attribs": {},
+        "coords": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "curspeed": 0.0,
+        "dbref": 24,
+        "desc": "Nondescript object.",
+        "destination": 0,
+        "heading": [
+            0.0,
+            0.0
+        ],
+        "location": 1,
+        "lock": false,
+        "maxwarp": 0.0,
+        "name": "PADD",
+        "race": "",
+        "shipref": 0,
+        "sp_class": "",
+        "sp_empire": "",
+        "sp_type": "",
+        "targetspeed": 0.0,
+        "type": 2
+    },
+    {
+        "accel": 0.0,
+        "alias": "",
+        "attribs": {},
+        "coords": [
+            2472.9481144999995,
+            -13329.93865153022,
+            31320.0193
+        ],
+        "curspeed": 0.0,
+        "dbref": 25,
+        "desc": "A mysterious outpost in the void of space.",
+        "destination": 0,
+        "heading": [
+            0.0,
+            0.0
+        ],
+        "location": 15,
+        "lock": false,
+        "maxwarp": 0.0,
+        "name": "ChH Eriokh",
+        "race": "",
+        "shipref": 0,
+        "sp_class": "",
+        "sp_empire": "Romulan",
+        "sp_type": "Base",
+        "targetspeed": 0.0,
+        "type": 4
     }
 ]
