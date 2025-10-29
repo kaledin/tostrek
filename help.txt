@@ -29,6 +29,6 @@ leave                 - leave an object
 @lock <obj>           - toggle object's lock
 @ex <obj>             - examine an object
 
-help             - display this help file
-quit             - exit the game
+help                  - display this help file
+quit                  - exit the game
 

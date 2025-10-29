@@ -1,0 +1,1 @@
+&sp_tick chr=@wait 1;&sp_x me=add(get(me/sp_x),mul(get(me/sp_curspeed),cos(get(me/sp_mark),d),cos(get(me/sp_heading),d)));&sp_y me=add(get(me/sp_x),mul(get(me/sp_curspeed),cos(get(me/sp_mark),d),sin(get(me/sp_heading),d)));&sp_z me=add(get(me/sp_x),mul(get(me/sp_curspeed),sin(get(me/sp_mark),d)));@trigger me/sp_tick

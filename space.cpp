@@ -158,16 +158,21 @@ void navconsole(GameObj* player, GameObj* self, const std::string& args) {
 	    std::println("---------------------- {} -- Long Range Scan -----------------------",
 				    world_db[self->shipref]->name);
 	    for (const auto& [key, value] : world_db[self->shipref]->lrs_contacts) {
-          if(world_db[value]->type != SHIP)
-            continue;
-	        std::string lrscolor{};
-	        std::string name{};
+            if(world_db[value]->type != SHIP)
+                continue;
+            std::string lrscolor{};
+            std::string name{};
 	        if (world_db[value]->sp_type == "Ship")
 		        lrscolor = CYAN;
 	        else if (world_db[value]->sp_type == "Planet")
 		        lrscolor = GREEN;
 	        else if (world_db[value]->sp_type == "Base")
 		        lrscolor = RED;
+		    else if (world_db[value]->sp_type == "Star")
+		        lrscolor = MAGENTA;
+		    else
+		        lrscolor = WHITE;
+		        
 	        if (dist3d(world_db[self->shipref]->coords, world_db[value]->coords)<sectorsize)
 		        name = world_db[value]->name;
 	        else
@@ -208,6 +213,7 @@ void navconsole(GameObj* player, GameObj* self, const std::string& args) {
         cbreak();              // Disable line buffering
         noecho();              // Don't echo user input
         nodelay(stdscr, TRUE); // Make getch() non-blocking
+        keypad(stdscr, TRUE);
         curs_set(0);           // Hide cursor
 
         while (true) {
@@ -232,14 +238,52 @@ void navconsole(GameObj* player, GameObj* self, const std::string& args) {
                          showspeed(contact->curspeed).c_str(),
                          name.c_str());
             }
+            mvprintw(row++, 0, "------------------------------------------------------------------------------");
 
-            mvprintw(row + 1, 0, "Press 'q' to quit.");
+            mvprintw(row++, 0, "Speed: %s   (%s)", showspeed(world_db[self->shipref]->curspeed).c_str(), showspeed(world_db[self->shipref]->targetspeed).c_str());
+            mvprintw(row++, 0, "Heading: %3.0f/%-3.0f", world_db[self->shipref]->heading[0], world_db[self->shipref]->heading[1]);
+            mvprintw(row++, 0, "------------------------------------------------------------------------------");
+            
+            mvprintw(row++, 0, "Speed control: `+`, `-`, <spacebar> to stop");
+            mvprintw(row++, 0, "Heading control: cursor keys <^>");
+            mvprintw(row++, 0, "Press 'q' to quit.");
             refresh();
 
             int ch = getch();
+            
             if (ch == 'q' || ch == 'Q')
                 break;
-
+            if (ch == ' ')
+                world_db[self->shipref]->targetspeed = 0;
+            if (ch == '+') {
+                if (world_db[self->shipref]->targetspeed == 0)
+                    world_db[self->shipref]->targetspeed = 0.01;
+                else if (world_db[self->shipref]->targetspeed*1.2 >= warp2gms(world_db[self->shipref]->maxwarp))
+                    world_db[self->shipref]->targetspeed = warp2gms(world_db[self->shipref]->maxwarp);           
+                else
+                    world_db[self->shipref]->targetspeed *= 1.2;
+            }
+            if (ch == '-')
+                world_db[self->shipref]->targetspeed /= 1.2;
+            if (ch == KEY_LEFT) {
+                if (world_db[self->shipref]->heading[0]-1 < 0)
+                    world_db[self->shipref]->heading[0] = 360;
+                world_db[self->shipref]->heading[0] -= 1;
+            }
+            if (ch == KEY_RIGHT)
+                world_db[self->shipref]->heading[0] = std::fmod((world_db[self->shipref]->heading[0]+1),360);
+            if (ch == KEY_UP) {
+                if (world_db[self->shipref]->heading[1] >= 90)
+                    world_db[self->shipref]->heading[1] = 90;
+                else
+                    world_db[self->shipref]->heading[1] += 1;
+            }
+            if (ch == KEY_DOWN) {
+                if (world_db[self->shipref]->heading[1] <= -90)
+                    world_db[self->shipref]->heading[1] = -90;
+                else
+                    world_db[self->shipref]->heading[1] -= 1;
+            }
             std::this_thread::sleep_for(std::chrono::milliseconds(100)); // 1 tick delay
         }
 
@@ -253,7 +297,8 @@ void navconsole(GameObj* player, GameObj* self, const std::string& args) {
 	        if (auto result = strtodigit<double>(arg2)) {
 		        if (*result > -0.33 && *result < 1.0) {
 		        std::println("Acknowledged: accelerating to IMPULSE {}", *result);
-		        world_db[self->shipref]->curspeed = c * (*result);
+                world_db[self->shipref]->targetspeed = c * (*result);
+		        world_db[self->shipref]->curspeed = world_db[self->shipref]->targetspeed;
 		        }
 		        else
 		            std::println("Error: cannot accelerate to IMPULSE {}", *result);
@@ -377,6 +422,11 @@ void tick_all_spaceobjs() {
 	for (auto& obj : world_db) { 
         if (obj->type != SHIP)
             continue;
+        if (obj->sp_type == "Asteroid") {
+            obj->heading[0] += 0.01;
+            if (obj->heading[0] >= 360.0)
+                obj->heading[0] -= 360.0;
+        }
 		double delta_time = 0.1;
         double delta_v = obj->accel * delta_time;
         

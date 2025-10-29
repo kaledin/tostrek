@@ -42,9 +42,8 @@ int main() {
         std::println("File not found!");
     cmd_look(player, "");
 
-    while (handle_input(player)) {
-    }
-
+    while (handle_input(player));
+    
     running = false;
     space_thread.join();
     save_world("world.json");    

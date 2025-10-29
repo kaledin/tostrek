@@ -20,3 +20,5 @@ extern std::unordered_map<std::string, CommandFn> command_table;
 #define YELLOW  "\033[33m"
 #define BLUE    "\033[34m"
 #define CYAN    "\033[36m"
+#define WHITE   "\033[37m"
+#define MAGENTA   "\033[35m"

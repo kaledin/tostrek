@@ -470,17 +470,17 @@
         "alias": "",
         "attribs": {},
         "coords": [
-            1484.674114170754,
-            -16009.233067235196,
-            21262.750798976704
+            2473.307088986312,
+            -13329.665229737406,
+            31320.726706328798
         ],
         "curspeed": 0.0,
         "dbref": 16,
         "desc": "A Romulan scout.",
         "destination": 18446744073709551615,
         "heading": [
-            70.0,
-            74.0
+            31.0,
+            -69.0
         ],
         "location": 15,
         "lock": false,
@@ -499,9 +499,9 @@
         "alias": "",
         "attribs": {},
         "coords": [
-            -204.8104615818256,
-            -20732.393014723584,
-            3658.621897037942
+            -2388.832420238571,
+            -8948.465027619772,
+            15643.233310051515
         ],
         "curspeed": 1.0,
         "dbref": 17,
@@ -753,6 +753,209 @@
         "sp_empire": "Romulan",
         "sp_type": "Base",
         "targetspeed": 0.0,
+        "type": 4
+    },
+    {
+        "accel": 0.0,
+        "alias": "",
+        "attribs": {},
+        "coords": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "curspeed": 0.0,
+        "dbref": 26,
+        "desc": "Massive windows dominate two of the walls in this room, providing a spectacular view of the docked ships beyond. While you are looking into the spacedock and cannot see the stars from this room, your full view of the space doors and of the sparkling halos of repair torches makes this an interesting and lovely place. As you cannot see all of the moorings from this location, a docking register in the center of the room bleeps and blinks to show you the status of all docked vessels.",
+        "destination": 0,
+        "heading": [
+            0.0,
+            0.0
+        ],
+        "location": 26,
+        "lock": false,
+        "maxwarp": 0.0,
+        "name": "Docking Ring -- ChH Eriokh",
+        "race": "",
+        "shipref": 0,
+        "sp_class": "",
+        "sp_empire": "",
+        "sp_type": "",
+        "targetspeed": 0.0,
+        "type": 0
+    },
+    {
+        "accel": 0.0,
+        "alias": "",
+        "attribs": {},
+        "coords": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "curspeed": 0.0,
+        "dbref": 27,
+        "desc": "Nondescript object.",
+        "destination": 0,
+        "heading": [
+            0.0,
+            0.0
+        ],
+        "location": 26,
+        "lock": false,
+        "maxwarp": 0.0,
+        "name": "Comm Panel",
+        "race": "",
+        "shipref": 0,
+        "sp_class": "",
+        "sp_empire": "",
+        "sp_type": "",
+        "targetspeed": 0.0,
+        "type": 2
+    },
+    {
+        "accel": 0.0,
+        "alias": "",
+        "attribs": {},
+        "coords": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "curspeed": 0.0,
+        "dbref": 28,
+        "desc": "Nondescript object.",
+        "destination": 0,
+        "heading": [
+            0.0,
+            0.0
+        ],
+        "location": 26,
+        "lock": false,
+        "maxwarp": 0.0,
+        "name": "Docking Register",
+        "race": "",
+        "shipref": 0,
+        "sp_class": "",
+        "sp_empire": "",
+        "sp_type": "",
+        "targetspeed": 0.0,
+        "type": 2
+    },
+    {
+        "accel": 0.0,
+        "alias": "",
+        "attribs": {},
+        "coords": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "curspeed": 0.0,
+        "dbref": 29,
+        "desc": "Nondescript room.",
+        "destination": 0,
+        "heading": [
+            0.0,
+            0.0
+        ],
+        "location": 29,
+        "lock": false,
+        "maxwarp": 0.0,
+        "name": "Transport Corridor -- ChH Eriokh",
+        "race": "",
+        "shipref": 0,
+        "sp_class": "",
+        "sp_empire": "",
+        "sp_type": "",
+        "targetspeed": 0.0,
+        "type": 0
+    },
+    {
+        "accel": 0.0,
+        "alias": "C",
+        "attribs": {},
+        "coords": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "curspeed": 0.0,
+        "dbref": 30,
+        "desc": "Nondescript exit.",
+        "destination": 29,
+        "heading": [
+            0.0,
+            0.0
+        ],
+        "location": 26,
+        "lock": false,
+        "maxwarp": 0.0,
+        "name": "Corridor",
+        "race": "",
+        "shipref": 0,
+        "sp_class": "",
+        "sp_empire": "",
+        "sp_type": "",
+        "targetspeed": 0.0,
+        "type": 3
+    },
+    {
+        "accel": 0.0,
+        "alias": "D",
+        "attribs": {},
+        "coords": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "curspeed": 0.0,
+        "dbref": 31,
+        "desc": "Nondescript exit.",
+        "destination": 26,
+        "heading": [
+            0.0,
+            0.0
+        ],
+        "location": 29,
+        "lock": false,
+        "maxwarp": 0.0,
+        "name": "Docking Ring",
+        "race": "",
+        "shipref": 0,
+        "sp_class": "",
+        "sp_empire": "",
+        "sp_type": "",
+        "targetspeed": 0.0,
+        "type": 3
+    },
+    {
+        "accel": 1.0,
+        "alias": "",
+        "attribs": {},
+        "coords": [
+            19925.80365669505,
+            -18551.18366848389,
+            40081.1337384519
+        ],
+        "curspeed": 0.05,
+        "dbref": 32,
+        "desc": "A barren asteroid drifting through space.",
+        "destination": 0,
+        "heading": [
+            245.30999999921093,
+            45.0
+        ],
+        "location": 15,
+        "lock": false,
+        "maxwarp": 1.0,
+        "name": "Saxoxus",
+        "race": "",
+        "shipref": 0,
+        "sp_class": "",
+        "sp_empire": "Neutral",
+        "sp_type": "Asteroid",
+        "targetspeed": 0.05,
         "type": 4
     }
 ]

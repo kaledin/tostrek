@@ -539,7 +539,7 @@ void cmd_ex(GameObj* player, const std::string& args) {
 bool check_exits(GameObj* player, std::string& input) {
     
     for (const auto& exit : world_db) {
-        if (exit->type == EXIT && exit->location == player->location && exit->alias == input && exit->type == EXIT) {
+        if (exit->type == EXIT && exit->location == player->location && str_tolower(exit->alias) == input) {
             std::println("You walk towards the exit leading {}.", exit->alias);
             if (exit->lock == true)
                 std::println("The door appears to be locked.");
